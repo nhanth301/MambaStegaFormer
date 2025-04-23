@@ -2,11 +2,13 @@
 __pycache__/
 *.py[cod]
 *$py.class
-*result*
-checkpoints
+checkPoint/
+*results*
 # C extensions
 *.so
-
+*log*
+*.jpg
+*.png
 # Distribution / packaging
 .Python
 build/
@@ -26,6 +28,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
