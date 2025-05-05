@@ -29,8 +29,8 @@ from torch.utils.data import DataLoader
 
 import utils.transformed as transforms
 from data.ImageFolderDataset import MyImageFolder
-from models.HidingUNet import UnetGenerator
-from models.RevealNet import RevealNet
+from stega_models.HidingUNet import UnetGenerator
+from stega_models.RevealNet import RevealNet
 
 DATA_DIR = '/n/liyz/data/deep-steganography-dataset/'
 
