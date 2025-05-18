@@ -9,7 +9,7 @@ device = torch.device("cuda")
 from .vssm_arch import VSSBlock
 # from .single_direction_vssm_arch import VSSBlock
 # from .double_direction_vssm_arch import VSSBlock
-
+from torch.nn import TransformerEncoderLayer
 
 class Mamba(nn.Module):
     def __init__(self, d_model=512, nhead=8, num_encoder_layers=3,
@@ -21,13 +21,22 @@ class Mamba(nn.Module):
         self.args = args
         
         if self.args is not None:
-            encoder_layer = VSSBlock(
+            encoder_layer = nn.Sequential(
+                TransformerEncoderLayer(
+                    d_model=d_model,
+                    nhead=nhead,
+                    dim_feedforward=dim_feedforward,
+                    dropout=dropout,
+                    activation=activation,
+                    batch_first=False),
+                VSSBlock(
                 hidden_dim=d_model,
                 drop_path=0,
                 norm_layer=nn.LayerNorm,
                 attn_drop_rate=0,
                 d_state=self.args.d_state,
-                input_resolution=self.args.img_size)
+                input_resolution=self.args.img_size),     
+            )
             
         encoder_norm = nn.LayerNorm(d_model) if normalize_before else None
         self.encoder_c = Encoder(encoder_layer, num_encoder_layers, encoder_norm, args=self.args)

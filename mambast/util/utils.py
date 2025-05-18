@@ -30,10 +30,19 @@ def load_pretrained(args):
 
     new_state_dict = OrderedDict()
     state_dict = torch.load(mamba_path)
+    model_dict = mamba.state_dict()
+
     for k, v in state_dict.items():
-        namekey = k
-        new_state_dict[namekey] = v
-    mamba.load_state_dict(new_state_dict)
+        if k in model_dict and v.shape == model_dict[k].shape:
+            new_state_dict[k] = v
+        else:
+            print(f"Skip loading weight for: {k}")
+
+    missing_keys = [k for k in model_dict if k not in new_state_dict]
+    print(f"Missing keys in checkpoint: {len(missing_keys)}")
+
+    model_dict.update(new_state_dict)
+    mamba.load_state_dict(model_dict)
 
     new_state_dict = OrderedDict()
     state_dict = torch.load(embedding_path)
