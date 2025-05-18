@@ -274,6 +274,13 @@ def train(args):
                 torch.save(state_dict,
                         '{:s}/embedding_iter_{:d}.pth'.format(args.checkpoints_dir,
                                                                 i + 1))
+                
+                optimizer_state = optimizer.state_dict()
+                for state in optimizer_state['state'].values():
+                    for k, v in state.items():
+                        if isinstance(v, torch.Tensor):
+                            state[k] = v.to(torch.device('cpu'))
+                torch.save(optimizer_state, f'{args.checkpoints_dir}/optimizer_iter_{i + 1}.pth')
     writer.close()
 
         
