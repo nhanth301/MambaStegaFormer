@@ -35,6 +35,7 @@ if __name__ == '__main__':
     parser.add_argument('--decoder_path', type=str, default='experiments/decoder_iter_160000.pth')
     parser.add_argument('--mamba_path', type=str, default='experiments/transformer_iter_160000.pth')
     parser.add_argument('--embedding_path', type=str, default='experiments/embedding_iter_160000.pth')
+    parser.add_argument('--optim_path', type=str, default='experiments/optimizer_iter_160000.pth')
     parser.add_argument('--continue_train', action='store_true') 
     parser.add_argument('--resume_iter', type=int, default=0)
     parser.add_argument('--lr', type=float, default=5e-4)

@@ -170,6 +170,14 @@ def train(args):
                                 {'params': network.decode.parameters()},
                                 {'params': network.embedding.parameters()},        
                                 ], lr=args.lr)
+    if args.continue_train:
+        print("Loading optimizer state...")
+        optimizer.load_state_dict(torch.load(args.optim_path))
+        # Optional: move optimizer state to GPU if needed
+        for state in optimizer.state.values():
+            for k, v in state.items():
+                if isinstance(v, torch.Tensor):
+                    state[k] = v.to(device)
 
 
     if not os.path.exists(args.results_dir+"/test"):
@@ -215,7 +223,10 @@ def train(args):
                 style_out = torch.cat((style_images,style_out),0)
                 style_out = torch.cat((style_images,style_out),0)
                 save_image(style_out, output_name)
-
+            print(f"loss_c device: {loss_c.device}")
+            print(f"loss_s device: {loss_s.device}")
+            print(f"l_identity1 device: {l_identity1.device}")
+            print(f"l_identity2 device: {l_identity2.device}")
                 
             loss_c = args.content_weight * loss_c
             loss_s = args.style_weight * loss_s
