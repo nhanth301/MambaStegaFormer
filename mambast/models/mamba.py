@@ -21,13 +21,31 @@ class Mamba(nn.Module):
         self.args = args
         
         if self.args is not None:
-            encoder_layer = VSSBlock(
-                hidden_dim=d_model,
-                drop_path=0,
-                norm_layer=nn.LayerNorm,
-                attn_drop_rate=0,
-                d_state=self.args.d_state,
-                input_resolution=self.args.img_size)   
+            if self.args.trans_encoder:
+                encoder_layer = torch.nn.Sequential(
+                    torch.nn.TransformerEncoderLayer(
+                        d_model=d_model,
+                        nhead=nhead,
+                        dim_feedforward=dim_feedforward,
+                        dropout=dropout,
+                        activation=activation,
+                        batch_first=False),
+                    VSSBlock(
+                        hidden_dim=d_model,
+                        drop_path=0,
+                        norm_layer=nn.LayerNorm,
+                        attn_drop_rate=0,
+                        d_state=self.args.d_state,
+                        input_resolution=self.args.img_size)   
+                )
+            else:
+                encoder_layer = VSSBlock(
+                    hidden_dim=d_model,
+                    drop_path=0,
+                    norm_layer=nn.LayerNorm,
+                    attn_drop_rate=0,
+                    d_state=self.args.d_state,
+                    input_resolution=self.args.img_size)   
             
             
         encoder_norm = nn.LayerNorm(d_model) if normalize_before else None

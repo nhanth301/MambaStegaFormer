@@ -66,6 +66,7 @@ if __name__ == '__main__':
                         choices=['train', 'eval', 'test'])
     parser.add_argument('--d_state', type=int, default=16, help='Mamba hidden state dimension')
     parser.add_argument('--freeze_mamba', action='store_true', help='Freeze mamba parameters')
+    parser.add_argument('--trans_encoder', action='store_true', help='Add transformer encoder')
     args = parser.parse_args()
     torch.manual_seed(args.seed)
     random.seed(args.seed)
