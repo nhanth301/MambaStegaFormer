@@ -67,6 +67,7 @@ if __name__ == '__main__':
     parser.add_argument('--d_state', type=int, default=16, help='Mamba hidden state dimension')
     parser.add_argument('--freeze_mamba', action='store_true', help='Freeze mamba parameters')
     parser.add_argument('--trans_encoder', action='store_true', help='Add transformer encoder')
+    parser.add_argument('--load_optim', action='store_true', help='Load optimizer')
     args = parser.parse_args()
     torch.manual_seed(args.seed)
     random.seed(args.seed)

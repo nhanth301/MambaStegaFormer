@@ -200,14 +200,14 @@ def train(args):
                                 {'params': network.decode.parameters()},
                                 {'params': network.embedding.parameters()},        
                                 ], lr=args.lr)
-    # if args.continue_train:
-    #     print("Loading optimizer state...")
-    #     optimizer.load_state_dict(torch.load(args.optim_path))
-    #     # Optional: move optimizer state to GPU if needed
-    #     for state in optimizer.state.values():
-    #         for k, v in state.items():
-    #             if isinstance(v, torch.Tensor):
-    #                 state[k] = v.to(device)
+    if args.load_optim:
+        print("Loading optimizer state...")
+        optimizer.load_state_dict(torch.load(args.optim_path))
+        # Optional: move optimizer state to GPU if needed
+        for state in optimizer.state.values():
+            for k, v in state.items():
+                if isinstance(v, torch.Tensor):
+                    state[k] = v.to(device)
 
 
     if not os.path.exists(args.results_dir+"/test"):
