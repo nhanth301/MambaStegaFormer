@@ -51,8 +51,7 @@ def load_pretrained(args):
         new_state_dict[namekey] = v
     embedding.load_state_dict(new_state_dict)
 
-    with torch.no_grad():
-        network = MambaST.MambaST(vgg,decoder,embedding,mamba,args)
+    network = MambaST.MambaST(vgg,decoder,embedding,mamba,args)
     
     print(f"Loaded Embedding checkpoints from {embedding_path}")
     print(f"Loaded Mamba checkpoints from {mamba_path}")

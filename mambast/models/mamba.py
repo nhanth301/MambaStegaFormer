@@ -52,9 +52,16 @@ class Mamba(nn.Module):
                 input_resolution=self.args.img_size,
                 is_cross=True,
                 args=args)
+            trans_layer =  torch.nn.TransformerEncoderLayer(
+                   d_model=d_model,
+                     nhead=nhead,
+                     dim_feedforward=dim_feedforward,
+                     dropout=dropout,
+                     activation=activation,
+                     batch_first=False)
         
         decoder_norm = nn.LayerNorm(d_model)
-        self.decoder = Decoder(decoder_layer, num_decoder_layers, decoder_norm,
+        self.decoder = Decoder(decoder_layer, trans_layer, num_decoder_layers, decoder_norm,
                                           return_intermediate=return_intermediate_dec, args=args)
 
         self._reset_parameters()
@@ -131,10 +138,11 @@ class Encoder(nn.Module):
 
 class Decoder(nn.Module):
 
-    def __init__(self, decoder_layer, num_layers, norm=None, return_intermediate=False, args=None):
+    def __init__(self, decoder_layer, trans_layer, num_layers, norm=None, return_intermediate=False, args=None):
         super().__init__()
         self.args=args
         self.layers = _get_clones(decoder_layer, num_layers)
+        self.trans_layer = _get_clones(trans_layer, num_layers)
         self.num_layers = num_layers
         self.norm = norm
         self.return_intermediate = return_intermediate
@@ -153,12 +161,14 @@ class Decoder(nn.Module):
 
         intermediate = []
 
-        for index, layer in enumerate(self.layers):
+        for index, layer in enumerate(zip(self.trans_layer,self.layers)):
             if self.args is not None:
                 if self.args.use_pos_embed:
-                    output = layer(self.with_pos_embed(output, pos), self.with_pos_embed(memory, query_pos)) + output
+                    output = layer[0](self.with_pos_embed(output, query_pos))   
+                    output = layer[1](self.with_pos_embed(output, pos), self.with_pos_embed(memory, query_pos)) + output
                 else:
-                    output = layer(output,memory) + output
+                    output = layer[0](output) + output
+                    output = layer[1](output, memory) + output
            
             if self.return_intermediate:
                 intermediate.append(self.norm(output))

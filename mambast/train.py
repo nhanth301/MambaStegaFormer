@@ -15,6 +15,8 @@ from torchvision.utils import save_image
 import numpy as np
 import random
 from util.utils import load_pretrained
+from torch.nn import TransformerEncoderLayer
+
 
 def select_random_images(root_dir, num_images):
     images = []
@@ -139,15 +141,27 @@ def train(args):
 
     mamba = Mamba.Mamba(args=args)
     
-    with torch.no_grad():
-        network = MambaST.MambaST(vgg,decoder,embedding,mamba,args)
+    network = MambaST.MambaST(vgg,decoder,embedding,mamba,args)
         
     if args.continue_train:
         network = load_pretrained(args)
-        
-    network.train()
+    
+    if args.freeze_mamba:
+        print("Freezing all parameters...")
+        for param in network.parameters():
+            param.requires_grad = False  # freeze toàn bộ
 
+        print("Unfreezing TransformerEncoderLayer parameters...")
+        for name, module in network.named_modules():
+            if "trans" in name.lower():
+                for param in module.parameters():
+                    param.requires_grad = True
+    
+    
+    network.train()
     network.to(device)
+
+    
     content_tf = train_transform()
     style_tf = train_transform()
 
@@ -170,14 +184,14 @@ def train(args):
                                 {'params': network.decode.parameters()},
                                 {'params': network.embedding.parameters()},        
                                 ], lr=args.lr)
-    if args.continue_train:
-        print("Loading optimizer state...")
-        optimizer.load_state_dict(torch.load(args.optim_path))
-        # Optional: move optimizer state to GPU if needed
-        for state in optimizer.state.values():
-            for k, v in state.items():
-                if isinstance(v, torch.Tensor):
-                    state[k] = v.to(device)
+    # if args.continue_train:
+    #     print("Loading optimizer state...")
+    #     optimizer.load_state_dict(torch.load(args.optim_path))
+    #     # Optional: move optimizer state to GPU if needed
+    #     for state in optimizer.state.values():
+    #         for k, v in state.items():
+    #             if isinstance(v, torch.Tensor):
+    #                 state[k] = v.to(device)
 
 
     if not os.path.exists(args.results_dir+"/test"):
@@ -223,10 +237,7 @@ def train(args):
                 style_out = torch.cat((style_images,style_out),0)
                 style_out = torch.cat((style_images,style_out),0)
                 save_image(style_out, output_name)
-            # print(f"loss_c device: {loss_c.device}")
-            # print(f"loss_s device: {loss_s.device}")
-            # print(f"l_identity1 device: {l_identity1.device}")
-            # print(f"l_identity2 device: {l_identity2.device}")
+
                 
             loss_c = args.content_weight * loss_c
             loss_s = args.style_weight * loss_s
@@ -248,7 +259,7 @@ def train(args):
                 mean_l_identity2 = mean_l_identity2/args.print_every
                 mean_total_loss = mean_loss_c + mean_loss_s + mean_l_identity1 + mean_l_identity2
 
-                print(f"Iter {i+1} - Total loss: {mean_total_loss} - Content loss: {mean_loss_c} - Style loss: {mean_loss_s} - l1: {mean_l_identity1} - l2: {mean_l_identity2}", flush=True)
+                print(f"Iter {i+1} - Total loss: {mean_total_loss} - Content loss: {mean_loss_c} - Style loss: {mean_loss_s} - l1: {mean_l_identity1} - l2: {mean_l_identity2}")
                 mean_loss_c = 0
                 mean_loss_s = 0
                 mean_l_identity1 = 0
