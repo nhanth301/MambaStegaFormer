@@ -259,7 +259,9 @@ def train(args):
                 mean_l_identity2 = mean_l_identity2/args.print_every
                 mean_total_loss = mean_loss_c + mean_loss_s + mean_l_identity1 + mean_l_identity2
 
-                print(f"Iter {i+1} - Total loss: {mean_total_loss} - Content loss: {mean_loss_c} - Style loss: {mean_loss_s} - l1: {mean_l_identity1} - l2: {mean_l_identity2}")
+                print(f"Iter {i+1} - Total loss: {mean_total_loss} - Content loss: {mean_loss_c} - Style loss: {mean_loss_s}", flush=True)
+                print(f"Iter {i+1} - L1 loss: {mean_l_identity1} - L2 loss: {mean_l_identity2}", flush=True)
+                print()
                 mean_loss_c = 0
                 mean_loss_s = 0
                 mean_l_identity1 = 0
