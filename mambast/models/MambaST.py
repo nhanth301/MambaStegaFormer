@@ -40,13 +40,32 @@ class MambaST(nn.Module):
       assert (target.requires_grad is False)
       return self.mse_loss(input, target)
 
+    def gram_matrix(self, feature):
+        b, c, h, w = feature.size()
+        feature = feature.view(b, c, h * w)
+        gram = torch.bmm(feature, feature.transpose(1, 2))  # Batch matrix multiplication
+        gram = gram / (c * h * w)  # Normalize
+        return gram
+
     def calc_style_loss(self, input, target):
-        assert (input.size() == target.size())
-        assert (target.requires_grad is False)
+        assert input.size() == target.size()
+        assert not target.requires_grad
+        
+        # Mean and std losses
         input_mean, input_std = calc_mean_std(input)
         target_mean, target_std = calc_mean_std(target)
-        return self.mse_loss(input_mean, target_mean) + \
-               self.mse_loss(input_std, target_std)
+        mean_std_loss = self.mse_loss(input_mean, target_mean) + \
+                        self.mse_loss(input_std, target_std)
+
+        # Gram matrix loss
+        input_gram = self.gram_matrix(input)
+        target_gram = self.gram_matrix(target)
+        gram_loss = self.mse_loss(input_gram, target_gram)
+        
+        mean_std_weight = 1.0
+        gram_weight = 1e4 
+        return (mean_std_weight * mean_std_loss + gram_weight * gram_loss)/2
+
                
     def forward(self, samples_c: NestedTensor,samples_s: NestedTensor):
         """ The forward expects a NestedTensor, which consists of:

@@ -21,22 +21,14 @@ class Mamba(nn.Module):
         self.args = args
         
         if self.args is not None:
-            encoder_layer = nn.Sequential(
-                TransformerEncoderLayer(
-                    d_model=d_model,
-                    nhead=nhead,
-                    dim_feedforward=dim_feedforward,
-                    dropout=dropout,
-                    activation=activation,
-                    batch_first=False),
-                VSSBlock(
+            encoder_layer = VSSBlock(
                 hidden_dim=d_model,
                 drop_path=0,
                 norm_layer=nn.LayerNorm,
                 attn_drop_rate=0,
                 d_state=self.args.d_state,
-                input_resolution=self.args.img_size),     
-            )
+                input_resolution=self.args.img_size)   
+            
             
         encoder_norm = nn.LayerNorm(d_model) if normalize_before else None
         self.encoder_c = Encoder(encoder_layer, num_encoder_layers, encoder_norm, args=self.args)
