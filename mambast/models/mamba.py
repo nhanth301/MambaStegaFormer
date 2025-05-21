@@ -175,7 +175,7 @@ class Decoder(nn.Module):
             if self.args is not None:
                 if self.args.use_pos_embed:
                     output = layer[0](self.with_pos_embed(output, query_pos))   
-                    output = layer[1](self.with_pos_embed(output, pos), self.with_pos_embed(memory, query_pos)) + output
+                    output = layer[1](output, memory) + output
                 else:
                     output = layer[0](output) + output
                     output = layer[1](output, memory) + output
