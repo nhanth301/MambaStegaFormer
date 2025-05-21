@@ -152,17 +152,18 @@ def train(args):
             param.requires_grad = False  
 
         # print("Unfreezing TransformerEncoderLayer parameters...")
-        for name, module in network.named_modules():
-            if isinstance(module, TransformerEncoderLayer):
-                for param in module.parameters():
-                    param.requires_grad = True
-                print(f"Unfreezing: {name}")
+        # for name, module in network.named_modules():
+        #     if isinstance(module, TransformerEncoderLayer):
+        #         for param in module.parameters():
+        #             param.requires_grad = True
+        #         print(f"Unfreezing: {name}")
+        print(f"Unfreezing: new_ps")
         for param in network.mamba.new_ps.parameters():
-            print(f"Unfreezing: new_ps")
             param.requires_grad = True
-        # for name, param in network.named_parameters():
-        #     if name.startswith("mamba.encoder_c"):
-        #         param.requires_grad = True 
+        print(f"Unfreezing: decoder")
+        for name, param in network.named_parameters():
+            if name.startswith("mamba.decoder"):
+                param.requires_grad = True 
     #check param is trainable
     # for name, param in network.named_parameters():
     #     if param.requires_grad:
