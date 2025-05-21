@@ -14,7 +14,7 @@ from torch.nn import TransformerEncoderLayer
 class Mamba(nn.Module):
     def __init__(self, d_model=512, nhead=8, num_encoder_layers=3,
                  num_decoder_layers=3, dim_feedforward=512, dropout=0.1,
-                 activation="relu", normalize_before=False,
+                 activation="relu", normalize_before=True,
                  return_intermediate_dec=False, args=None):
         super().__init__()
         
@@ -22,7 +22,7 @@ class Mamba(nn.Module):
         
         if self.args is not None:
             if self.args.trans_encoder:
-                encoder_layer = torch.nn.Sequential(
+                cnt_encoder_layer = torch.nn.Sequential(
                     torch.nn.TransformerEncoderLayer(
                         d_model=d_model,
                         nhead=nhead,
@@ -36,8 +36,15 @@ class Mamba(nn.Module):
                         norm_layer=nn.LayerNorm,
                         attn_drop_rate=0,
                         d_state=self.args.d_state,
-                        input_resolution=self.args.img_size)   
-                )
+                        input_resolution=self.args.img_size))
+                sty_encoder_layer = VSSBlock(
+                    hidden_dim=d_model,
+                    drop_path=0,
+                    norm_layer=nn.LayerNorm,
+                    attn_drop_rate=0,
+                    d_state=self.args.d_state,
+                    input_resolution=self.args.img_size)
+                
             else:
                 encoder_layer = VSSBlock(
                     hidden_dim=d_model,
@@ -49,8 +56,12 @@ class Mamba(nn.Module):
             
             
         encoder_norm = nn.LayerNorm(d_model) if normalize_before else None
-        self.encoder_c = Encoder(encoder_layer, num_encoder_layers, encoder_norm, args=self.args, is_content=True)
-        self.encoder_s = Encoder(encoder_layer, num_encoder_layers, encoder_norm, args=self.args, is_content=False)
+        if self.args.trans_encoder:
+            self.encoder_c = Encoder(cnt_encoder_layer, num_encoder_layers, encoder_norm, args=self.args, is_content=True)
+            self.encoder_s = Encoder(sty_encoder_layer, num_encoder_layers, encoder_norm, args=self.args, is_content=False)
+        else:
+            self.encoder_c = Encoder(encoder_layer, num_encoder_layers, encoder_norm, args=self.args, is_content=True)
+            self.encoder_s = Encoder(encoder_layer, num_encoder_layers, encoder_norm, args=self.args, is_content=False)
 
         if self.args is not None:
             decoder_layer = VSSBlock(
@@ -135,7 +146,7 @@ class Encoder(nn.Module):
         
         for index, layer in enumerate(self.layers):
             if self.args is not None:
-                if self.args.use_pos_embed and self.is_content:
+                if self.args.use_pos_embed and self.is_content and index == 0:
                     output = layer(self.with_pos_embed(output, pos)) + output
                 else:
                     output = layer(output) + output
