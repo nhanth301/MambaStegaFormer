@@ -49,8 +49,8 @@ class Mamba(nn.Module):
             
             
         encoder_norm = nn.LayerNorm(d_model) if normalize_before else None
-        self.encoder_c = Encoder(encoder_layer, num_encoder_layers, encoder_norm, args=self.args)
-        self.encoder_s = Encoder(encoder_layer, num_encoder_layers, encoder_norm, args=self.args)
+        self.encoder_c = Encoder(encoder_layer, num_encoder_layers, encoder_norm, args=self.args, is_content=True)
+        self.encoder_s = Encoder(encoder_layer, num_encoder_layers, encoder_norm, args=self.args, is_content=False)
 
         if self.args is not None:
             decoder_layer = VSSBlock(
@@ -116,12 +116,13 @@ class Mamba(nn.Module):
 
 
 class Encoder(nn.Module):
-    def __init__(self, encoder_layer, num_layers, norm=None, args=None):
+    def __init__(self, encoder_layer, num_layers, norm=None, args=None, is_content=True):
         super().__init__()
         self.args = args
         self.layers = _get_clones(encoder_layer, num_layers)
         self.num_layers = num_layers
         self.norm = norm
+        self.is_content = is_content
 
     def with_pos_embed(self, tensor, pos: Optional[Tensor]):
         return tensor if pos is None else tensor + pos
@@ -134,7 +135,7 @@ class Encoder(nn.Module):
         
         for index, layer in enumerate(self.layers):
             if self.args is not None:
-                if self.args.use_pos_embed:
+                if self.args.use_pos_embed and self.is_content:
                     output = layer(self.with_pos_embed(output, pos)) + output
                 else:
                     output = layer(output) + output
