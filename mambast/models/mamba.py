@@ -174,12 +174,12 @@ class Decoder(nn.Module):
 
         for index, layer in enumerate(zip(self.trans_layer,self.layers)):
             if self.args is not None:
-                if self.args.use_pos_embed:
-                    output = layer[0](self.with_pos_embed(output, query_pos))   
-                    output = layer[1](output, memory) + output
-                else:
-                    output = layer[0](output) + output
-                    output = layer[1](output, memory) + output
+                # if self.args.use_pos_embed:
+                #     output = layer[0](self.with_pos_embed(output, query_pos))   
+                #     output = layer[1](output, memory) + output
+                # else:
+                output = layer[0](output) + output
+                output = layer[1](output, memory) + output
            
             if self.return_intermediate:
                 intermediate.append(self.norm(output))
