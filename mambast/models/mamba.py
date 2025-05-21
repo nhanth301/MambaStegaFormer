@@ -28,10 +28,17 @@ class Mamba(nn.Module):
                 attn_drop_rate=0,
                 d_state=self.args.d_state,
                 input_resolution=self.args.img_size)
+            trans_layer =  torch.nn.TransformerEncoderLayer(
+                   d_model=d_model,
+                     nhead=nhead,
+                     dim_feedforward=dim_feedforward,
+                     dropout=dropout,
+                     activation=activation,
+                     batch_first=False)
             
         encoder_norm = nn.LayerNorm(d_model) if normalize_before else None
-        self.encoder_c = Encoder(encoder_layer, num_encoder_layers, encoder_norm, args=self.args)
-        self.encoder_s = Encoder(encoder_layer, num_encoder_layers, encoder_norm, args=self.args)
+        self.encoder_c = Encoder(encoder_layer, trans_layer, num_encoder_layers, encoder_norm, args=self.args, is_content=True)
+        self.encoder_s = Encoder(encoder_layer, trans_layer, num_encoder_layers, encoder_norm, args=self.args, is_content=False)
             
             
 
@@ -99,10 +106,12 @@ class Mamba(nn.Module):
 
 
 class Encoder(nn.Module):
-    def __init__(self, encoder_layer, num_layers, norm=None, args=None, is_content=True):
+    def __init__(self, encoder_layer, trans_layer, num_layers, norm=None, args=None, is_content=True):
         super().__init__()
         self.args = args
         self.layers = _get_clones(encoder_layer, num_layers)
+        if is_content:
+            self.trans_layer = _get_clones(trans_layer, num_layers)
         self.num_layers = num_layers
         self.norm = norm
         self.is_content = is_content
@@ -116,12 +125,22 @@ class Encoder(nn.Module):
                 pos: Optional[Tensor] = None):
         output = src
         
-        for index, layer in enumerate(self.layers):
-            if self.args is not None:
-                # if self.args.use_pos_embed:
-                #     output = layer(self.with_pos_embed(output, pos)) + output
-                # else:
-                output = layer(output) + output
+        if not self.is_content:
+            for index, layer in enumerate(self.layers):
+                if self.args is not None:
+                    # if self.args.use_pos_embed:
+                    #     output = layer(self.with_pos_embed(output, pos)) + output
+                    # else:
+                    output = layer(output) + output
+        else:
+            for index, layer in enumerate(zip(self.trans_layer,self.layers)):
+                if self.args is not None:
+                    if self.args.use_pos_embed and index == 0:
+                        output = layer[0](self.with_pos_embed(output,pos)) + output
+                        output = layer[1](output) + output
+                    else:
+                        output = layer[0](output) + output
+                        output = layer[1](output) + output
             
 
         if self.norm is not None:
@@ -157,12 +176,12 @@ class Decoder(nn.Module):
 
         for index, layer in enumerate(zip(self.trans_layer,self.layers)):
             if self.args is not None:
-                if self.args.use_pos_embed:
-                    output = layer[0](self.with_pos_embed(output, query_pos))   
-                    output = layer[1](output, memory) + output
-                else:
-                    output = layer[0](output) + output
-                    output = layer[1](output, memory) + output
+                # if self.args.use_pos_embed:
+                #     output = layer[0](self.with_pos_embed(output, query_pos))   
+                #     output = layer[1](output, memory) + output
+                # else:
+                output = layer[0](output) + output
+                output = layer[1](output, memory) + output
            
             if self.return_intermediate:
                 intermediate.append(self.norm(output))
