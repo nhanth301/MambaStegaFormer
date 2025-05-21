@@ -149,19 +149,17 @@ def train(args):
     if args.freeze_mamba:
         print("Freezing all parameters...")
         for param in network.parameters():
-            param.requires_grad = False  # freeze toàn bộ
+            param.requires_grad = False  
 
-        # print("Unfreezing TransformerEncoderLayer parameters...")
-        # for name, module in network.named_modules():
-        #     if "trans" in name.lower():
-        #         for param in module.parameters():
-        #             param.requires_grad = True
         print("Unfreezing TransformerEncoderLayer parameters...")
         for name, module in network.named_modules():
             if isinstance(module, TransformerEncoderLayer):
                 for param in module.parameters():
                     param.requires_grad = True
                 print(f"Unfreezing: {name}")
+        for param in network.mamba.new_ps.parameters():
+            print(f"Unfreezing: new_ps")
+            param.requires_grad = True
     #check param is trainable
     # for name, param in network.named_parameters():
     #     if param.requires_grad:
@@ -170,14 +168,15 @@ def train(args):
     network.train()
     network.to(device)
 
-    # from torchinfo import summary
-    # style = torch.randn(1, 3, 256, 256).cuda()
-    # content = torch.randn(1, 3, 256, 256).cuda()
-    # summary(network, 
-    #     input_data=(style, content), 
-    #     col_names=["input_size", "output_size", "num_params", "kernel_size", "mult_adds"],
-    #     depth=4)
-    
+    from torchinfo import summary
+    style = torch.randn(1, 3, 256, 256).cuda()
+    content = torch.randn(1, 3, 256, 256).cuda()
+    summary(network, 
+        input_data=(style, content), 
+        col_names=["input_size", "output_size", "num_params", "kernel_size", "mult_adds"],
+        depth=4)
+
+
     content_tf = train_transform()
     style_tf = train_transform()
 
