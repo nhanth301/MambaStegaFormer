@@ -16,7 +16,7 @@ import numpy as np
 import random
 from util.utils import load_pretrained
 from torch.nn import TransformerEncoderLayer
-
+import copy
 
 def select_random_images(root_dir, num_images):
     images = []
@@ -318,11 +318,12 @@ def train(args):
                         '{:s}/embedding_iter_{:d}.pth'.format(args.checkpoints_dir,
                                                                 i + 1))
                 
-                optimizer_state = optimizer.state_dict()
+                optimizer_state = copy.deepcopy(optimizer.state_dict())
                 for state in optimizer_state['state'].values():
                     for k, v in state.items():
                         if isinstance(v, torch.Tensor):
                             state[k] = v.to(torch.device('cpu'))
+
                 torch.save(optimizer_state, f'{args.checkpoints_dir}/optimizer_iter_{i + 1}.pth')
     writer.close()
 
