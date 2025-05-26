@@ -161,7 +161,7 @@ def train(args):
         # for param in network.mamba.new_ps.parameters():
         #     param.requires_grad = True
         print(f"Unfreezing: decoder")
-        for param in network.decoder.parameters():
+        for param in network.decode.parameters():
             param.requires_grad = True
     #check param is trainable
     # for name, param in network.named_parameters():
