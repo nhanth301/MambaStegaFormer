@@ -151,19 +151,18 @@ def train(args):
         for param in network.parameters():
             param.requires_grad = False  
 
-        print("Unfreezing TransformerEncoderLayer parameters...")
-        for name, module in network.named_modules():
-            if isinstance(module, TransformerEncoderLayer):
-                for param in module.parameters():
-                    param.requires_grad = True
-                print(f"Unfreezing: {name}")
-        print(f"Unfreezing: new_ps")
-        for param in network.mamba.new_ps.parameters():
+        # print("Unfreezing TransformerEncoderLayer parameters...")
+        # for name, module in network.named_modules():
+        #     if isinstance(module, TransformerEncoderLayer):
+        #         for param in module.parameters():
+        #             param.requires_grad = True
+        #         print(f"Unfreezing: {name}")
+        # print(f"Unfreezing: new_ps")
+        # for param in network.mamba.new_ps.parameters():
+        #     param.requires_grad = True
+        print(f"Unfreezing: decoder")
+        for param in network.decoder.parameters():
             param.requires_grad = True
-        # print(f"Unfreezing: decoder")
-        # for name, param in network.named_parameters():
-        #     if name.startswith("mamba.decoder"):
-        #         param.requires_grad = True 
     #check param is trainable
     # for name, param in network.named_parameters():
     #     if param.requires_grad:
@@ -172,6 +171,35 @@ def train(args):
     network.train()
     network.to(device)
 
+
+#     import time
+#     network.eval()
+#     content_tensor = torch.randn(1, 3, 512, 512).to(device)  # Fake input
+#     style_tensor = torch.randn(1, 3, 512, 512).to(device)  # Fake input
+    
+#     # --- Warm-up ---
+#     with torch.no_grad():
+#         for _ in range(5):
+#             _ = network(content_tensor, style_tensor)
+#     print("▶ Inference timing & memory usage:")
+
+# # --- GPU Mode ---
+#     if device.type == 'cuda':
+#         torch.cuda.reset_peak_memory_stats()
+#         torch.cuda.synchronize()
+#         start_time = time.time()
+
+#         with torch.no_grad():
+#             _ = network(content_tensor, style_tensor)
+
+#         torch.cuda.synchronize()
+#         end_time = time.time()
+
+#         peak_mem = torch.cuda.max_memory_allocated() / 1024 / 1024  # MB
+
+#         print(f"⚡ Device: GPU")
+#         print(f"Inference time: {(end_time - start_time)*1000:.2f} ms")
+#         print(f"Peak GPU memory usage: {peak_mem:.2f} MB")
     from torchinfo import summary
     style = torch.randn(1, 3, 256, 256).cuda()
     content = torch.randn(1, 3, 256, 256).cuda()
