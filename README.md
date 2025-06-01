@@ -1,2 +1,109 @@
-# 🌀 MambaStegaFormer: Serial Style Transfer with Content Steganography and Hybrid Mamba-Transformer
-MambaStegaFormer is a deep learning framework designed for serial style transfer — the ability to apply multiple artistic styles sequentially — while preserving the semantic content of the original image. This is achieved through a hybrid architecture that combines the efficiency of Mamba (state space models) with the expressive power of Transformers, enhanced by a steganographic mechanism that invisibly encodes content features into stylized outputs.
+# 🌀 MambaStegaFormer
+**Serial Style Transfer with Content Steganography and Hybrid Mamba-Transformer**
+
+## 🧠 Introduction
+
+`MambaStegaFormer` is a novel deep learning framework designed for **serial style transfer** — applying multiple artistic styles sequentially — while preserving the semantic content of the original image.
+
+Our method combines:
+- A **Hybrid Mamba-Transformer backbone** for powerful and efficient feature modeling.
+- A **steganographic pipeline** (U-Net Hider + CNN Revealer) to encode and recover content information during repeated stylizations.
+
+## 🏗️ Model Architecture
+
+The architecture consists of three main modules:
+1. **Style Transfer Backbone**: Hybrid Mamba-Transformer for stylization.<br>
+![STMODEL](images/stmodel.drawio.png)
+
+2. **Hiding Network**: A U-Net that embeds content into stylized output.<br>
+<img src="images/hiding.png" alt="HMODEL" width="700"/>
+
+3. **Revealing Network**: A CNN that extracts hidden content for further use.<br>
+![RMODEL](images/revealnet.drawio.png)
+
+## 🔁 Training Pipeline <br>
+<img src="images/full.png" alt="HMODEL" width="700"/>
+
+
+The training pipeline integrates all components of the `MambaStegaFormer` model in an end-to-end learning framework. 
+
+1. The **content image** is first processed by the **Hybrid Mamba-Transformer backbone** to generate a stylized output.
+2. The **Hiding Network (U-Net)** then embeds the original content features into this stylized image, creating a steganographic output that visually resembles the stylized image but secretly contains the content.
+3. The **Revealing Network (CNN)** extracts the hidden content from the steganographic image to reconstruct the original content features.
+4. Loss functions are applied both on stylization quality and content reconstruction, guiding the model to balance style transfer fidelity and content preservation.
+5. This joint training ensures the model can perform serial style transfers while maintaining content integrity across multiple stylizations.
+
+## 🚀 Inference Pipeline
+
+The model supports two inference modes to address different use cases:
+
+
+### 1. Inference **Without Steganography**
+
+In this mode, style transfer is performed directly without hiding or revealing content. Suitable for simple stylization tasks.
+
+<img src="images/infer0.png" alt="Inference without Steganography" width="700"/>
+
+---
+
+### 2. Inference **With Steganography**
+
+In this mode, the content is hidden within the stylized image and then revealed to preserve the original content. This enables **serial style transfer** without content degradation.
+
+<img src="images/infer.png" alt="Inference with Steganography" width="700"/>
+
+
+
+## 📊 Tasks and Evaluation
+
+We evaluate MambaStegaFormer on three tasks:
+
+### 🎨 1. Style Transfer
+- **Qualitative** <br>
+<img src="images/st_eval.drawio.png" alt="Style Transfer Qualitative Evaluation" width="700"/>
+
+- **Quantitative**: We compare style transfer methods on metrics including ArtFID, MSG, LPIPS, CFSD, inference time, and memory usage. Lower ArtFID, MSG, LPIPS, and CFSD indicate better stylization quality and content preservation. Our model achieves the best content fidelity (CFSD) while maintaining competitive style quality and efficiency.
+
+| Method  | ArtFID ↓ | MSG ↓  | LPIPS ↓ | CFSD ↓ | Time (ms) ↓        | Memory Usage (MiB) ↓ |
+|---------|----------|--------|---------|--------|--------------------|----------------------|
+| [AdaIN (ICCV 2017)](https://arxiv.org/abs/1703.06868)   | 29.1034  | 1.0171 | 0.5726  | 0.2876      | **137.20 ± 0.36🥇**      | **187.14🥇**               |
+| [StyTR (CVPR 2022)](https://arxiv.org/abs/2105.14576)  | 28.8073  | 1.0175 | **0.4815🥇**  | *0.2552🥈*      | 2343.51 ± 13.49    | 1725.54              |
+| [MambaST (WACV 2025, SOTA 🎯)](https://arxiv.org/abs/2409.10385) | **26.6509🥇**  | **1.0145🥇** | 0.5267  | 0.2655      | *1317.06 ± 5.47🥈*     | *1048.71🥈*              |
+| **Ours**    | *28.4936🥈*  | *1.0163🥈* | *0.4942🥈*  | **0.2551🥇**      | 1912.66 ± 4.21     | 1088.95              |
+
+📌 MambaST (WACV 2025) achieves state-of-the-art performance on the ArtFID metric.
+
+### 🕵️‍♂️ 2. Steganography
+- **Qualitative** <br>
+
+<img src="images/stegan_img.png" alt="Steganography Qualitative Evaluation" width="700"/>
+
+- **Quantitative**: We evaluate the hiding and revealing performance on 500 stylized images, each generated by randomly pairing 500 content images from the COCO dataset with 5 different style images from the WikiArt dataset.
+
+| Metric          | Hiding Loss | Revealing Loss | Total Loss |
+|-----------------|-------------|----------------|------------|
+| Value (L2 ↓)    | 0.001085    | 0.001470       | 0.002187   |
+
+
+
+### 🔁 3. Serial Style Transfer
+
+- **Qualitative** <br>
+<img src="images/eval.drawio.png" alt="Steganography Qualitative Evaluation" width="700"/>
+
+- **Quantitative**: We evaluate serial stylization performance using L2 distance, SSIM (Structural Similarity), and LPIPS (Learned Perceptual Image Patch Similarity). Lower L2 and LPIPS, and higher SSIM values indicate better content preservation and perceptual quality after multiple stylizations.
+
+| Method           | L2 ↓     | SSIM ↑   | LPIPS ↓  |
+|------------------|----------|----------|----------|
+| [AdaIN (ICCV 2017)](https://arxiv.org/abs/1703.06868)           | 0.0198   | 0.4419   | 0.3108   |
+| [SC-Stylization (WACV 2020)](https://arxiv.org/abs/1812.03910)   | 0.0349   | 0.5684   | 0.2222   |
+| **Ours**         | **0.0103🥇** | **0.8461🥇** | **0.0858🥇** |
+
+## 📚 References
+- [Shumeet Baluja, “Hiding Images in Plain Sight: Deep Steganography,” NIPS 2017](https://papers.nips.cc/paper_files/paper/2017/hash/838e8afb1ca34354ac209f53d90c3a43-Abstract.html)
+- [Huang & Belongie, “Arbitrary Style Transfer in Real-time with Adaptive Instance Normalization,” ICCV 2017](https://arxiv.org/abs/1703.06868)  
+- [Zhu et al., “Self-Contained Stylization via Steganography for Reverse and Serial Style Transfer,” WACV 2020](https://arxiv.org/abs/1812.03910)  
+- [Yingying Deng et al., “StyTr^2:  Image Style Transfer with Transformers,” CVPR 2022](https://arxiv.org/abs/2105.14576)  
+- [Filippo Botti et al., “Mamba-ST: State Space Model for Efficient Style Transfer,” WACV 2025 (SOTA)](https://arxiv.org/abs/2409.10385)  
+
+

@@ -8,6 +8,7 @@ checkpoints
 *.so
 *input*
 *output*
+*data*
 # Distribution / packaging
 .Python
 build/
