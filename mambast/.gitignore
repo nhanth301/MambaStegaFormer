@@ -6,7 +6,7 @@ checkpoints/
 *results*
 # C extensions
 *.so
-
+logs
 # Distribution / packaging
 .Python
 build/

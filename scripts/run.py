@@ -18,92 +18,216 @@ from util.utils import load_pretrained
 from stega_models.HidingUNet import UnetGenerator
 from stega_models.RevealNet import RevealNet
 
-# Set page configuration for a cleaner look
+# Set page configuration
 st.set_page_config(
-    page_title="Neural Style Transfer with Content Preservation",
+    page_title="Neural Style Transfer & Steganography Studio",
     page_icon="🎨",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Apply custom CSS for a cleaner interface
+# Custom CSS for modern design
 st.markdown("""
 <style>
     .main .block-container {
-        padding-top: 2rem;
+        padding-top: 1rem;
         padding-bottom: 2rem;
-        max-width: 1200px;
+        max-width: 1400px;
     }
+    
+    /* Header styling */
+    .header-container {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        text-align: center;
+        color: white;
+    }
+    
+    .header-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .header-subtitle {
+        font-size: 1.2rem;
+        opacity: 0.9;
+    }
+    
+    /* Tab styling */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 8px;
+        margin-bottom: 2rem;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        height: 60px;
+        white-space: pre-wrap;
+        background-color: transparent;
+        border-radius: 8px;
+        color: #495057;
+        font-weight: 600;
+        font-size: 1rem;
+        padding: 12px 24px;
+        transition: all 0.3s ease;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white !important;
+        box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+    }
+    
+    /* Upload area styling */
+    .upload-section {
+        # background: #f8f9fa;
+        # border-radius: 15px;
+        # padding: 2rem;
+        # margin-bottom: 2rem;
+        # border: 2px dashed #dee2e6;
+        # transition: all 0.3s ease;
+    }
+    
+    .upload-section:hover {
+        border-color: #4facfe;
+        background: rgba(79, 172, 254, 0.05);
+    }
+    
+    /* Button styling */
     .stButton button {
-        width: 100%;
-        background-color: #4CAF50;
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
         color: white;
         border: none;
-        padding: 0.5rem;
-        border-radius: 4px;
+        border-radius: 25px;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        font-size: 1.1rem;
+        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+        transition: all 0.3s ease;
+        width: 100%;
     }
-    h1, h2, h3 {
-        margin-bottom: 0.5rem;
+    
+    .stButton button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
     }
-    .caption {
-        font-size: 0.8rem;
-        color: #666;
-        text-align: center;
-        margin-top: 0.2rem;
+    
+    /* Results section */
+    .results-container {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-top: 2rem;
     }
-    .result-container {
-        background-color: #f8f9fa;
-        padding: 1rem;
-        border-radius: 5px;
-        margin-top: 1rem;
-    }
-    .download-btn {
-        margin-top: 1rem;
-    }
-    .comparison-container {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 1rem;
-    }
-    .mode-selector {
-        background-color: #f1f3f5;
-        padding: 1rem;
-        border-radius: 5px;
+    
+    .results-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #495057;
         margin-bottom: 1.5rem;
-    }
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 24px;
-    }
-    .stTabs [data-baseweb="tab"] {
-        height: 50px;
-        white-space: pre-wrap;
-        background-color: #f1f3f5;
-        border-radius: 4px 4px 0px 0px;
-        gap: 1px;
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-    .stTabs [aria-selected="true"] {
-        background-color: #4CAF50 !important;
-        color: white !important;
-    }
-    .step-container {
-        border-left: 3px solid #4CAF50;
-        padding-left: 15px;
-        margin-bottom: 20px;
-    }
-    .flow-arrow {
         text-align: center;
-        font-size: 24px;
-        color: #888;
-        margin: 10px 0;
     }
+    
+    /* Info cards */
+    .info-card {
+        background: linear-gradient(135deg, #17a2b8 0%, #6610f2 100%);
+        color: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .info-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+    
+    .info-description {
+        line-height: 1.8;
+        opacity: 0.95;
+        font-size: 1rem;
+    }
+    
+    /* Process flow */
+    .process-flow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        margin: 2rem 0;
+        flex-wrap: wrap;
+    }
+    
+    .flow-step {
+        background: white;
+        border-radius: 10px;
+        padding: 1rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        min-width: 120px;
+        font-weight: 600;
+        color: #495057;
+    }
+    
+    .flow-arrow {
+        font-size: 1.5rem;
+        color: #4facfe;
+        font-weight: bold;
+    }
+    
+    /* Image styling */
+    .image-container {
+        text-align: center;
+        margin: 1rem 0;
+    }
+    
+    .image-label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+    }
+    
+    /* Success/Error messages */
+    .stSuccess {
+        border-radius: 10px;
+        border-left: 4px solid #28a745;
+    }
+    
+    .stError {
+        border-radius: 10px;
+        border-left: 4px solid #dc3545;
+    }
+    
+    .stWarning {
+        border-radius: 10px;
+        border-left: 4px solid #ffc107;
+    }
+    
+    /* Sidebar styling */
+    .css-1d391kg {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+    
+    /* Hide Streamlit branding */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
 
+# Device setup
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-def preprocess_image(image, img_size):
+def preprocess_image(image, img_size=512):
     """Preprocess an image for the models"""
     image = image.convert("RGB").resize((img_size, img_size))
     return transforms.ToTensor()(image).unsqueeze(0).to(device)
@@ -112,397 +236,453 @@ def preprocess_image(image, img_size):
 def load_style_transfer_model():
     """Load the style transfer model"""
     class Args:
-        mamba_path = '../checkpoints/mamba_iter_160000.pth'
+        mamba_path = '../checkpoints/mamba_iter_65000.pth'
         embedding_path = '../checkpoints/embedding_iter_160000.pth'
         decoder_path = '../checkpoints/decoder_iter_160000.pth'
         vgg = '../checkpoints/vgg_normalised.pth'
         d_state = 16
-        img_size = 256
-        use_pos_embed = False
-        rnd_style = False
-    model = load_pretrained(Args()).to(device).eval()
-    return model, Args()
+        img_size = 512
+        use_pos_embed = True
+        rnd_style = True
+    
+    try:
+        model = load_pretrained(Args()).to(device).eval()
+        return model, Args()
+    except Exception as e:
+        st.error(f"Failed to load style transfer model: {str(e)}")
+        return None, None
 
 @st.cache_resource
 def load_steganography_models():
     """Load the hiding and reveal networks"""
-    Hnet = UnetGenerator(input_nc=6, output_nc=3, num_downs=7, output_function=nn.Sigmoid).to(device)
     try:
-        hnet_checkpoint = torch.load("../checkpoints/netH_epoch_73,sumloss=0.000447,Hloss=0.000258.pth", 
+        # Load Hiding Network
+        Hnet = UnetGenerator(input_nc=6, output_nc=3, num_downs=7, output_function=nn.Sigmoid).to(device)
+        hnet_checkpoint = torch.load("../checkpoints/netH_epoch_121,sumloss=0.000686,Hloss=0.000388.pth", 
                                    map_location=device)
         Hnet.load_state_dict(hnet_checkpoint)
-    except FileNotFoundError:
-        st.warning("Hiding network checkpoint not found. Using uninitialized model.")
-    Hnet.eval()
-
-    Rnet = RevealNet(output_function=nn.Sigmoid).to(device)
-    try:
-        rnet_checkpoint = torch.load("../checkpoints/netR_epoch_73,sumloss=0.000447,Rloss=0.000252.pth", 
+        Hnet.eval()
+        
+        # Load Reveal Network
+        Rnet = RevealNet(output_function=nn.Sigmoid).to(device)
+        rnet_checkpoint = torch.load("../checkpoints/netR_epoch_121,sumloss=0.000686,Rloss=0.000397.pth", 
                                    map_location=device)
         Rnet.load_state_dict(rnet_checkpoint)
-    except FileNotFoundError:
-        st.warning("Reveal network checkpoint not found. Using uninitialized model.")
-    Rnet.eval()
-    
-    return Hnet, Rnet
+        Rnet.eval()
+        
+        return Hnet, Rnet
+    except Exception as e:
+        st.error(f"Failed to load steganography models: {str(e)}")
+        return None, None
 
 def tensor_to_image(tensor):
     """Convert a tensor to a PIL Image"""
-    # Remove batch dimension and move to CPU
     img = tensor.squeeze(0).cpu().detach()
-    # Convert to numpy and transpose to (H, W, C)
     img = img.numpy().transpose(1, 2, 0)
-    # Clip to [0, 1] and convert to uint8
     img = np.clip(img, 0, 1)
     img = (img * 255).astype(np.uint8)
     return Image.fromarray(img)
 
-def run_serial_style_transfer(content_tensor, style_tensors, model):
-    """Run serial style transfer"""
-    outputs = []
-    current_content = content_tensor.clone()
-    
-    for idx, style_tensor in enumerate(style_tensors):
-        with torch.no_grad():
-            output_tensor, *_ = model(current_content, style_tensor)
-        
-        output_img = tensor_to_image(output_tensor)
-        outputs.append(output_img)
-        
-        # Update for next iteration
-        current_content = preprocess_image(output_img, 256)
-    
-    return outputs
+def image_to_bytes(image):
+    """Convert PIL image to bytes for download"""
+    buf = io.BytesIO()
+    image.save(buf, format="PNG")
+    return buf.getvalue()
 
-def run_content_preserving_style_transfer(content_tensor, style_tensors, model, Hnet, Rnet):
-    """Run style transfer with content preservation using steganography"""
-    styled_tensors = []
-    container_tensors = []
-    revealed_tensors = []
-    
-    # Original content tensor for the first iteration
-    current_content = content_tensor.clone()
-    
-    for idx, style_tensor in enumerate(style_tensors):
-        # Step 1: Style transfer with current content
-        with torch.no_grad():
-            styled_tensor, *_ = model(current_content, style_tensor)
-        styled_tensors.append(styled_tensor)
-        
-        # Step 2: Hide original content in styled image
-        concat_tensor = torch.cat((styled_tensor, current_content), dim=1)
-        with torch.no_grad():
-            container_tensor = Hnet(concat_tensor).clamp(0, 1)
-        container_tensors.append(container_tensor)
-        
-        # Step 3: Reveal content from container
-        with torch.no_grad():
-            revealed_tensor = Rnet(container_tensor).clamp(0, 1)
-        revealed_tensors.append(revealed_tensor)
-        
-        # Step 4: Use revealed content for next style
-        current_content = revealed_tensor.clone()
-    
-    return styled_tensors, container_tensors, revealed_tensors
+# Header
+st.markdown("""
+<div class="header-container">
+    <div class="header-title">🎨 Neural Style Transfer & Steganography Studio</div>
+    <div class="header-subtitle">Advanced AI-powered image processing with style transfer and steganography</div>
+</div>
+""", unsafe_allow_html=True)
 
-# Header with minimalist design
-st.markdown("<h1 style='text-align: center;'>Neural Style Transfer Studio</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; margin-bottom: 1rem;'>Transform images with styles while preserving content</p>", unsafe_allow_html=True)
-
-# Mode selection
+# Sidebar
 with st.sidebar:
-    st.markdown("### Mode Selection")
-    mode = st.radio(
-        "Choose Transfer Mode:",
-        ["Serial Style Transfer", "Content Preserving Style Transfer", "Style Transfer", "Style Transfer with Steganography"],
-        help="Serial applies each style sequentially. Content Preserving uses steganography to retain original content."
-    )
+    st.markdown("## 🛠️ System Status")
     
-    st.markdown("### About the Modes")
+    # Check device
+    device_status = "🟢 GPU Available" if torch.cuda.is_available() else "🟡 CPU Only"
+    st.markdown(f"**Device:** {device_status}")
+    
+    # Model loading status
+    style_model, args = load_style_transfer_model()
+    Hnet, Rnet = load_steganography_models()
+    
+    if style_model is not None:
+        st.markdown("**Style Transfer Model:** 🟢 Loaded")
+    else:
+        st.markdown("**Style Transfer Model:** 🔴 Failed")
+    
+    if Hnet is not None and Rnet is not None:
+        st.markdown("**Steganography Models:** 🟢 Loaded")
+    else:
+        st.markdown("**Steganography Models:** 🔴 Failed")
+    
+    st.markdown("---")
+    st.markdown("## 📖 Quick Guide")
     st.markdown("""
-    **Serial Style Transfer**: 
-    Each style is applied sequentially to the output of the previous style transfer.
+    **Style Transfer**: Apply artistic styles to images
     
-    **Content Preserving**:
-    Uses the following workflow for each style:
-    1. Apply style to content
-    2. Hide original content in styled image
-    3. Reveal content from container image
-    4. Use revealed content for next style application
+    **Serial Transfer**: Reveal → Style transfer
+    
+    **Hiding**: Hide secret in cover image
+    
+    **Revealing**: Extract hidden content
     """)
 
-# Main content area
-col1, col2 = st.columns([1, 1])
+# Main tabs
+tab1, tab2, tab3, tab4 = st.tabs([
+    "🎨 Style Transfer", 
+    "🔄 Serial Style Transfer", 
+    "🔒 Steganography Hiding", 
+    "🔓 Steganography Revealing"
+])
 
-with col1:
-    st.markdown("### Content Image")
-    content_file = st.file_uploader("Upload content image", type=["jpg", "png", "jpeg"], key="content", label_visibility="collapsed")
+# Tab 1: Style Transfer
+with tab1:
+    st.markdown("""
+    <div class="info-card">
+        <div class="info-title">🎨 Style Transfer</div>
+        <div class="info-description">
+            Apply artistic styles to your content images. You can optionally use steganography to hide the original content within the stylized result, allowing you to recover the original image later.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
-with col2:
-    st.markdown("### Style Images")
-    style_files = st.file_uploader("Upload style images (multiple allowed)", type=["jpg", "png", "jpeg"], 
-                                   accept_multiple_files=True, key="style", label_visibility="collapsed")
-has_steganography = st.checkbox("🧬 Has Steganography?", value=True)
-# Add a horizontal rule
-st.markdown("---")
-
-# Display and process images if uploaded
-if content_file and style_files:
-    # Preview row
-    st.markdown("### Image Preview")
-    preview_cols = st.columns([1] + [1] * min(3, len(style_files)))
+    col1, col2 = st.columns(2)
     
-    content_img = Image.open(content_file).resize((256, 256))
-    style_imgs = [Image.open(sf).resize((256, 256)) for sf in style_files]
+    with col1:
+        st.markdown('<div class="upload-section">', unsafe_allow_html=True)
+        st.markdown("### 🖼️ Content Image")
+        content_file = st.file_uploader("Upload your content image", type=["jpg", "png", "jpeg"], key="content_1")
+        if content_file:
+            content_img = Image.open(content_file)
+            content_img = content_img.resize((512,512))
+            st.image(content_img, caption="Content Image", use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
     
-    preview_cols[0].image(content_img, caption="Content Image", use_container_width=True)
+    with col2:
+        st.markdown('<div class="upload-section">', unsafe_allow_html=True)
+        st.markdown("### 🎭 Style Image")
+        style_file = st.file_uploader("Upload your style reference", type=["jpg", "png", "jpeg"], key="style_1")
+        if style_file:
+            style_img = Image.open(style_file)
+            style_img = style_img.resize((512,512))
+            st.image(style_img, caption="Style Image", use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
     
-    for i, style_img in enumerate(style_imgs[:3]):
-        preview_cols[i+1].image(style_img, caption=f"Style {i+1}", use_container_width=True)
+    # Options
+    use_steganography = st.checkbox("🔒 Use Steganography (Hide original content in stylized image)", key="stego_1")
     
-    if len(style_imgs) > 3:
-        st.caption(f"+ {len(style_imgs) - 3} more style images")
+    if use_steganography:
+        st.info("💡 With steganography enabled, the original content will be hidden inside the stylized image and can be recovered later using the revealing function.")
     
-    # Options row
-    options_col1, options_col2 = st.columns([1, 1])
-    
-    with options_col1:
-        st.button("✨ Generate Stylized Images", key="apply", type="primary")
-    
-    # Processing logic
-    if st.session_state.get("apply", False):
-        st.markdown("---")
-        
-        if mode == "Serial Style Transfer":
-            st.markdown("### Serial Style Transfer Results")
-            
-            with st.spinner("Applying serial style transfer..."):
-                model, args = load_style_transfer_model()
-                content_tensor = preprocess_image(content_img, args.img_size)
-                style_tensors = [preprocess_image(img, args.img_size) for img in style_imgs]
-                
-                progress_bar = st.progress(0)
-                styled_outputs = run_serial_style_transfer(content_tensor, style_tensors, model)
-                
-                # Display results
-                st.markdown("<div class='result-container'>", unsafe_allow_html=True)
-                
-                for i, output in enumerate(styled_outputs):
-                    cols = st.columns(3)
-                    cols[0].image(style_imgs[i], caption=f"Style {i+1}", use_container_width=True)
+    # Process button
+    if st.button("✨ Generate Styled Image", type="primary", key="process_1"):
+        if content_file and style_file and style_model is not None:
+            with st.spinner("🎨 Processing style transfer..."):
+                try:
+                    # Preprocess images
+                    content_tensor = preprocess_image(content_img, args.img_size)
+                    style_tensor = preprocess_image(style_img, args.img_size)
                     
-                    # Display the previous result if not the first style
-                    if i > 0:
-                        cols[1].image(styled_outputs[i-1], caption=f"Result {i}", use_container_width=True)
-                    else:
-                        cols[1].image(content_img, caption="Original Content", use_container_width=True)
-                    
-                    cols[2].image(output, caption=f"Result {i+1}", use_container_width=True)
-                
-                st.markdown("</div>", unsafe_allow_html=True)
-                
-                # Final result
-                final_result = styled_outputs[-1]
-                    
-        elif mode == "Content Preserving Style Transfer":  # Content Preserving Style Transfer
-            st.markdown("### Content Preserving Style Transfer Results")
-            
-            with st.spinner("Applying content preserving style transfer..."):
-                model, args = load_style_transfer_model()
-                Hnet, Rnet = load_steganography_models()
-                
-                content_tensor = preprocess_image(content_img, args.img_size)
-                style_tensors = [preprocess_image(img, args.img_size) for img in style_imgs]
-                
-                progress_bar = st.progress(0)
-                styled_tensors, container_tensors, revealed_tensors = run_content_preserving_style_transfer(
-                    content_tensor, style_tensors, model, Hnet, Rnet
-                )
-                
-                # Convert tensors to images
-                styled_images = [tensor_to_image(tensor) for tensor in styled_tensors]
-                container_images = [tensor_to_image(tensor) for tensor in container_tensors]
-                revealed_images = [tensor_to_image(tensor) for tensor in revealed_tensors]
-                
-                # Display the complete flow for each style
-                for i in range(len(styled_images)):
-                    st.markdown(f"## Style {i+1} Processing Flow")
-                    
-                    # Step 1: Style Transfer
-                    st.markdown(f"<div class='step-container'>", unsafe_allow_html=True)
-                    st.markdown("### Step 1: Style Transfer")
-                    cols = st.columns(4)
-                    
-                    # Show input content (original or revealed from previous step)
-                    if i == 0:
-                        cols[0].image(content_img, caption="Original Content", use_container_width=True)
-                        input_content = "Original Content"
-                    else:
-                        cols[0].image(revealed_images[i-1], caption=f"Revealed Content {i}", use_container_width=True)
-                        input_content = f"Revealed Content {i}"
-                    
-                    cols[1].image(style_imgs[i], caption=f"Style {i+1}", use_container_width=True)
-                    
-                    # Arrow
-                    cols[2].markdown("<div class='flow-arrow'>➡️</div>", unsafe_allow_html=True)
-                    
-                    # Styled output
-                    cols[3].image(styled_images[i], caption=f"Stylized Image {i+1}", use_container_width=True)
-                    
-                    st.markdown(f"**Process**: {input_content} + Style {i+1} → Stylized Image {i+1}")
-                    st.markdown("</div>", unsafe_allow_html=True)
-                    
-                    # Step 2: Hiding
-                    st.markdown(f"<div class='step-container'>", unsafe_allow_html=True)
-                    st.markdown("### Step 2: Content Hiding")
-                    cols = st.columns(4)
-                    
-                    cols[0].image(styled_images[i], caption=f"Stylized Image {i+1}", use_container_width=True)
-                    cols[1].image(content_img, caption="Original Content", use_container_width=True)
-                    
-                    # Arrow
-                    cols[2].markdown("<div class='flow-arrow'>➡️</div>", unsafe_allow_html=True)
-                    
-                    # Container image
-                    cols[3].image(container_images[i], caption=f"Container Image {i+1}", use_container_width=True)
-                    
-                    st.markdown(f"**Process**: Stylized Image {i+1} + Original Content → Container Image {i+1} (original content hidden inside)")
-                    st.markdown("</div>", unsafe_allow_html=True)
-                    
-                    # Step 3: Revealing
-                    st.markdown(f"<div class='step-container'>", unsafe_allow_html=True)
-                    st.markdown("### Step 3: Content Revealing")
-                    cols = st.columns(3)
-                    
-                    cols[0].image(container_images[i], caption=f"Container Image {i+1}", use_container_width=True)
-                    
-                    # Arrow
-                    cols[1].markdown("<div class='flow-arrow'>➡️</div>", unsafe_allow_html=True)
-                    
-                    # Revealed content
-                    cols[2].image(revealed_images[i], caption=f"Revealed Content {i+1}", use_container_width=True)
-                    
-                    st.markdown(f"**Process**: Container Image {i+1} → Revealed Content {i+1} (will be used for next style)")
-                    st.markdown("</div>", unsafe_allow_html=True)
-                    
-                    # Step 4: Next Style (if not the last one)
-                    if i < len(styled_images) - 1:
-                        st.markdown("<div class='flow-arrow'>⬇️</div>", unsafe_allow_html=True)
-                        st.markdown(f"**Next Step**: Revealed Content {i+1} will be used with Style {i+2}")
-                    
-                    st.markdown("---")
-                
-                # Final result
-                final_result = container_images[-1]
-        elif mode == "Style Transfer":
-            st.markdown("### Style Transfer Results")
-            with st.spinner("Applying style transfer..."):
-                model, args = load_style_transfer_model()
-                content_tensor = preprocess_image(content_img, args.img_size)
-                style_tensor = preprocess_image(style_imgs[0], args.img_size)
-                
-                with torch.no_grad():
-                    output_tensor, *_ = model(content_tensor, style_tensor)
-                
-                final_result = tensor_to_image(output_tensor)
-                st.image(final_result, caption="Final Output", use_container_width=True)
-                st.markdown("**Process**: Original Content + Style 1 → Final Output")
-                st.markdown("---")  
-        else:
-            st.markdown("### Style Transfer with Steganography Results")
-            with st.spinner("Applying style transfer with steganography..."):
-                model, args = load_style_transfer_model()
-                Hnet, Rnet = load_steganography_models()
-                
-                content_tensor = preprocess_image(content_img, args.img_size)
-                if has_steganography:
+                    # Style transfer
                     with torch.no_grad():
-                        content_tensor = Rnet(content_tensor).clamp(0, 1)
-                style_tensor = preprocess_image(style_imgs[0], args.img_size)
-                
-                # Step 1: Style transfer
-                with torch.no_grad():
-                    styled_tensor, *_ = model(content_tensor, style_tensor)
-                
-                # Step 2: Hide original content in styled image
-                concat_tensor = torch.cat((styled_tensor, content_tensor), dim=1)
-                with torch.no_grad():
-                    container_tensor = Hnet(concat_tensor).clamp(0, 1)
-                if has_steganography:
-                    revealed_image = tensor_to_image(content_tensor)
-                final_result = tensor_to_image(container_tensor)
-                st.image(final_result, caption="Final Output", use_container_width=True)
-                st.markdown("**Process**: Original Content + Style 1 → Container Image (original content hidden inside)")
-                st.markdown("---")
-        # Save the final image to a bytes buffer
-        buf = io.BytesIO()
-        final_result.save(buf, format="PNG")
-        byte_im = buf.getvalue()
-        
-        # Final results comparison section
-        st.markdown("## Final Results Comparison")
-        
-        col1, col2, col3 = st.columns([1, 1, 1])
-        
-        with col1:
-            st.image(content_img, caption="Original Content", use_container_width=True)
-        
-        with col2:
-            st.image(final_result, caption="Final Output", use_container_width=True)
-            
-        with col3:
-            st.markdown("<div class='download-btn'>", unsafe_allow_html=True)
-            st.download_button(
-                "📥 Download Result",
-                data=byte_im,
-                file_name=f"style_transfer_{mode.replace(' ', '_').lower()}.png",
-                mime="image/png"
-            )
-            st.markdown("</div>", unsafe_allow_html=True)
-        
-        if mode == "Content Preserving Style Transfer":
-            st.markdown("### Content Preservation Quality")
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                st.image(content_img, caption="Original Content", use_container_width=True)
-            
-            with col2:
-                st.image(revealed_images[-1], caption="Final Revealed Content", use_container_width=True)
-            
-            # Calculate PSNR between original content and final revealed content
-            orig_tensor = preprocess_image(content_img, 256)
-            revealed_tensor = preprocess_image(revealed_images[-1], 256)
-            
-            mse = torch.mean((orig_tensor - revealed_tensor) ** 2)
-            psnr = 10 * torch.log10(1 / mse)
-            
-            st.markdown(f"**Content Preservation Quality (PSNR)**: {psnr.item():.2f} dB")
-            st.markdown("Higher PSNR values indicate better content preservation.")
-        if mode == "Style Transfer with Steganography" and has_steganography:
-            st.markdown("### Steganography Quality")
-            col1, col2 = st.columns(2)
-            with col1:
-                st.image(content_img, caption="Original Content", use_container_width=True)
-            with col2:
-                st.image(revealed_image, caption="Revealed Image", use_container_width=True)
+                        styled_tensor, *_ = style_model(content_tensor, style_tensor)
+                        styled_tensor = styled_tensor.clamp(0, 1)
+                    
+                    styled_image = tensor_to_image(styled_tensor)
+                    
+                    if use_steganography and Hnet is not None:
+                        # Hide original content in styled image
+                        concat_tensor = torch.cat((styled_tensor, content_tensor), dim=1)
+                        with torch.no_grad():
+                            container_tensor = Hnet(concat_tensor).clamp(0, 1)
+                        final_result = tensor_to_image(container_tensor)
+                        result_label = "Styled Image (with hidden content)"
+                    else:
+                        final_result = styled_image
+                        result_label = "Styled Image"
+                    
+                    # Display results
+                    st.markdown('<div class="results-container">', unsafe_allow_html=True)
+                    st.markdown('<div class="results-title">🎯 Results</div>', unsafe_allow_html=True)
+                    
+                    col1, col2, col3 = st.columns(3)
+                    with col1:
+                        st.image(content_img, caption="Original Content", use_container_width=True)
+                    with col2:
+                        st.image(style_img, caption="Style Reference", use_container_width=True)
+                    with col3:
+                        st.image(final_result, caption=result_label, use_container_width=True)
+                        st.download_button(
+                            "📥 Download Result",
+                            data=image_to_bytes(final_result),
+                            file_name="styled_image.png",
+                            mime="image/png"
+                        )
+                    st.markdown('</div>', unsafe_allow_html=True)
+                    
+                    st.success("✅ Style transfer completed successfully!")
+                    
+                except Exception as e:
+                    st.error(f"❌ Error during processing: {str(e)}")
+        else:
+            st.warning("⚠️ Please upload both content and style images, and ensure models are loaded.")
 
-else:
-    # Placeholder instructions when no images are uploaded
-    st.info("👆 Please upload a content image and at least one style image to begin")
-    
-    st.markdown("### Content Preserving Style Transfer Flow")
+# Tab 2: Serial Style Transfer
+# Tab 2: Serial Style Transfer
+with tab2:
     st.markdown("""
-    The content preserving mode follows this workflow for each style:
+    <div class="info-card">
+        <div class="info-title">🔄 Serial Style Transfer</div>
+        <div class="info-description">
+            First reveal hidden content from the input image using the reveal network, then apply style transfer to the revealed content. Optionally, hide the revealed content back into the stylized result using steganography for later recovery.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
-    1. **Style Transfer**: Apply the style to the content image (original content or revealed content from previous step)
-    2. **Content Hiding**: Hide the original content inside the stylized image using steganography
-    3. **Content Revealing**: Extract the content from the container image
-    4. **Next Style**: Use the revealed content as input for the next style transfer
+    # Process flow visualization
+    st.markdown("""
+    <div class="process-flow">
+        <div class="flow-step">
+            <strong>Step 1</strong><br>
+            🔓 Reveal Hidden Content
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+            <strong>Step 2</strong><br>
+            🎨 Apply Style Transfer
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+            <strong>Step 3</strong><br>
+            🔒 (Optional) Hide Content
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
-    This approach helps maintain content integrity through multiple style transfers.
-    """)
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown('<div class="upload-section">', unsafe_allow_html=True)
+        st.markdown("### 🔓 Content Image (with hidden data)")
+        content_file_2 = st.file_uploader("Upload image containing hidden content", type=["jpg", "png", "jpeg"], key="content_2")
+        if content_file_2:
+            content_img_2 = Image.open(content_file_2)
+            st.image(content_img_2, caption="Input Image", use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown('<div class="upload-section">', unsafe_allow_html=True)
+        st.markdown("### 🎭 Style Image")
+        style_file_2 = st.file_uploader("Upload your style reference", type=["jpg", "png", "jpeg"], key="style_2")
+        if style_file_2:
+            style_img_2 = Image.open(style_file_2)
+            st.image(style_img_2, caption="Style Image", use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    # Options
+    use_steganography_2 = st.checkbox("🔒 Use Steganography (Hide revealed content in stylized image)", key="stego_2")
+    
+    if use_steganography_2:
+        st.info("💡 With steganography enabled, the revealed content will be hidden inside the stylized image and can be recovered later using the revealing function.")
+    
+    if st.button("🔄 Process Serial Style Transfer", type="primary", key="process_2"):
+        if content_file_2 and style_file_2 and style_model is not None and Rnet is not None:
+            with st.spinner("🔄 Processing serial style transfer..."):
+                try:
+                    # Step 1: Reveal hidden content
+                    content_tensor_2 = preprocess_image(content_img_2, args.img_size)
+                    with torch.no_grad():
+                        revealed_tensor = Rnet(content_tensor_2).clamp(0, 1)
+                    revealed_image = tensor_to_image(revealed_tensor)
+                    
+                    # Step 2: Style transfer on revealed content
+                    style_tensor_2 = preprocess_image(style_img_2, args.img_size)
+                    with torch.no_grad():
+                        styled_tensor, *_ = style_model(revealed_tensor, style_tensor_2)
+                        styled_tensor = styled_tensor.clamp(0, 1)
+                    styled_image = tensor_to_image(styled_tensor)
+                    
+                    # Step 3: Optional steganography
+                    if use_steganography_2 and Hnet is not None:
+                        # Hide revealed content in styled image
+                        concat_tensor = torch.cat((styled_tensor, revealed_tensor), dim=1)
+                        with torch.no_grad():
+                            container_tensor = Hnet(concat_tensor).clamp(0, 1)
+                        final_result = tensor_to_image(container_tensor)
+                        result_label = "Styled Image (with hidden content)"
+                    else:
+                        final_result = styled_image
+                        result_label = "Styled Image"
+                    
+                    # Display results
+                    st.markdown('<div class="results-container">', unsafe_allow_html=True)
+                    st.markdown('<div class="results-title">🎯 Serial Processing Results</div>', unsafe_allow_html=True)
+                    
+                    col1, col2, col3, col4 = st.columns(4)
+                    with col1:
+                        st.image(content_img_2, caption="Input Image", use_container_width=True)
+                    with col2:
+                        st.image(revealed_image, caption="Revealed Content", use_container_width=True)
+                    with col3:
+                        st.image(style_img_2, caption="Style Reference", use_container_width=True)
+                    with col4:
+                        st.image(final_result, caption=result_label, use_container_width=True)
+                        st.download_button(
+                            "📥 Download Result",
+                            data=image_to_bytes(final_result),
+                            file_name="serial_styled_image.png",
+                            mime="image/png"
+                        )
+                    st.markdown('</div>', unsafe_allow_html=True)
+                    
+                    st.success("✅ Serial style transfer completed successfully!")
+                    
+                except Exception as e:
+                    st.error(f"❌ Error during processing: {str(e)}")
+        else:
+            st.warning("⚠️ Please upload both images and ensure all models are loaded.")
+
+# Tab 3: Steganography Hiding
+with tab3:
+    st.markdown("""
+    <div class="info-card">
+        <div class="info-title">🔒 Steganography Hiding</div>
+        <div class="info-description">
+            Hide a secret image inside a cover image using deep learning steganography. The resulting container image will visually appear like the cover image but contains the hidden secret image that can be extracted later.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown('<div class="upload-section">', unsafe_allow_html=True)
+        st.markdown("### 🖼️ Cover Image")
+        st.markdown("*The image that will be visible*")
+        cover_file = st.file_uploader("Upload cover image", type=["jpg", "png", "jpeg"], key="cover")
+        if cover_file:
+            cover_img = Image.open(cover_file)
+            st.image(cover_img, caption="Cover Image", use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown('<div class="upload-section">', unsafe_allow_html=True)
+        st.markdown("### 🤫 Secret Image")
+        st.markdown("*The image to be hidden*")
+        secret_file = st.file_uploader("Upload secret image", type=["jpg", "png", "jpeg"], key="secret")
+        if secret_file:
+            secret_img = Image.open(secret_file)
+            st.image(secret_img, caption="Secret Image", use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    if st.button("🔒 Hide Secret Image", type="primary", key="process_3"):
+        if cover_file and secret_file and Hnet is not None:
+            with st.spinner("🔒 Hiding secret image..."):
+                try:
+                    # Preprocess images
+                    cover_tensor = preprocess_image(cover_img, 512)
+                    secret_tensor = preprocess_image(secret_img, 512)
+                    
+                    # Hide secret in cover
+                    concat_tensor = torch.cat((cover_tensor, secret_tensor), dim=1)
+                    with torch.no_grad():
+                        container_tensor = Hnet(concat_tensor).clamp(0, 1)
+                    container_image = tensor_to_image(container_tensor)
+                    
+                    # Display results
+                    st.markdown('<div class="results-container">', unsafe_allow_html=True)
+                    st.markdown('<div class="results-title">🎯 Hiding Results</div>', unsafe_allow_html=True)
+                    
+                    col1, col2, col3 = st.columns(3)
+                    with col1:
+                        st.image(cover_img, caption="Cover Image", use_container_width=True)
+                    with col2:
+                        st.image(secret_img, caption="Secret Image", use_container_width=True)
+                    with col3:
+                        st.image(container_image, caption="Container Image", use_container_width=True)
+                        st.download_button(
+                            "📥 Download Container",
+                            data=image_to_bytes(container_image),
+                            file_name="container_image.png",
+                            mime="image/png"
+                        )
+                    st.markdown('</div>', unsafe_allow_html=True)
+                    
+                    st.success("✅ Secret image hidden successfully!")
+                    st.info("💡 The container image looks like the cover image but contains the hidden secret. Use the 'Steganography Revealing' tab to extract the secret.")
+                    
+                except Exception as e:
+                    st.error(f"❌ Error during hiding: {str(e)}")
+        else:
+            st.warning("⚠️ Please upload both cover and secret images, and ensure hiding model is loaded.")
+
+# Tab 4: Steganography Revealing
+with tab4:
+    st.markdown("""
+    <div class="info-card">
+        <div class="info-title">🔓 Steganography Revealing</div>
+        <div class="info-description">
+            Extract and reveal hidden content from a container image that was created using steganographic hiding techniques. Upload a container image to recover the secret image hidden within it.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown('<div class="upload-section">', unsafe_allow_html=True)
+    st.markdown("### 📦 Container Image")
+    st.markdown("*Upload the image containing hidden content*")
+    container_file = st.file_uploader("Upload container image", type=["jpg", "png", "jpeg"], key="container")
+    if container_file:
+        container_img = Image.open(container_file)
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            st.image(container_img, caption="Container Image", use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    if st.button("🔓 Reveal Hidden Content", type="primary", key="process_4"):
+        if container_file and Rnet is not None:
+            with st.spinner("🔓 Revealing hidden content..."):
+                try:
+                    # Preprocess container image
+                    container_tensor = preprocess_image(container_img, 512)
+                    
+                    # Reveal secret
+                    with torch.no_grad():
+                        revealed_tensor = Rnet(container_tensor).clamp(0, 1)
+                    revealed_image = tensor_to_image(revealed_tensor)
+                    
+                    # Display results
+                    st.markdown('<div class="results-container">', unsafe_allow_html=True)
+                    st.markdown('<div class="results-title">🎯 Revealing Results</div>', unsafe_allow_html=True)
+                    
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.image(container_img, caption="Container Image", use_container_width=True)
+                    with col2:
+                        st.image(revealed_image, caption="Revealed Secret", use_container_width=True)
+                        st.download_button(
+                            "📥 Download Revealed Image",
+                            data=image_to_bytes(revealed_image),
+                            file_name="revealed_secret.png",
+                            mime="image/png"
+                        )
+                    st.markdown('</div>', unsafe_allow_html=True)
+                    
+                    st.success("✅ Hidden content revealed successfully!")
+                    
+                except Exception as e:
+                    st.error(f"❌ Error during revealing: {str(e)}")
+        else:
+            st.warning("⚠️ Please upload a container image and ensure reveal model is loaded.")
 
 # Footer
 st.markdown("---")
-st.markdown("<p style='text-align: center; color: #888; font-size: 0.8rem;'>Powered by Neural Style Transfer with Steganography</p>", unsafe_allow_html=True)
+st.markdown("""
+<div style="text-align: center; color: #888; padding: 2rem;">
+    <p><strong>Neural Style Transfer & Steganography Studio</strong></p>
+    <p>Powered by Deep Learning • Built with Streamlit</p>
+</div>
+""", unsafe_allow_html=True)

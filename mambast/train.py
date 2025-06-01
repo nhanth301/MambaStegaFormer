@@ -172,34 +172,6 @@ def train(args):
     network.to(device)
 
 
-#     import time
-#     network.eval()
-#     content_tensor = torch.randn(1, 3, 512, 512).to(device)  # Fake input
-#     style_tensor = torch.randn(1, 3, 512, 512).to(device)  # Fake input
-    
-#     # --- Warm-up ---
-#     with torch.no_grad():
-#         for _ in range(5):
-#             _ = network(content_tensor, style_tensor)
-#     print("▶ Inference timing & memory usage:")
-
-# # --- GPU Mode ---
-#     if device.type == 'cuda':
-#         torch.cuda.reset_peak_memory_stats()
-#         torch.cuda.synchronize()
-#         start_time = time.time()
-
-#         with torch.no_grad():
-#             _ = network(content_tensor, style_tensor)
-
-#         torch.cuda.synchronize()
-#         end_time = time.time()
-
-#         peak_mem = torch.cuda.max_memory_allocated() / 1024 / 1024  # MB
-
-#         print(f"⚡ Device: GPU")
-#         print(f"Inference time: {(end_time - start_time)*1000:.2f} ms")
-#         print(f"Peak GPU memory usage: {peak_mem:.2f} MB")
     from torchinfo import summary
     style = torch.randn(1, 3, 256, 256).cuda()
     content = torch.randn(1, 3, 256, 256).cuda()
