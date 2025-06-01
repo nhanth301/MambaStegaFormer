@@ -15,19 +15,19 @@ The architecture consists of three main modules:
 
 <div align="center">
 
-1. **Style Transfer Backbone**: Hybrid Mamba-Transformer for stylization.<br>
+### **1. Style Transfer Backbone**: Hybrid Mamba-Transformer for stylization.<br>
 <img src="images/stmodel.drawio.png" alt="STMODEL"/>
 </div>
 
 <div align="center">
 
-2. **Hiding Network**: A U-Net that embeds content into stylized output.<br>
+### **2. Hiding Network**: A U-Net that embeds content into stylized output.<br>
 <img src="images/hiding.png" alt="HMODEL" width="700"/>
 </div>
 
 <div align="center">
 
-3. **Revealing Network**: A CNN that extracts hidden content for further use.<br>
+### **3. Revealing Network**: A CNN that extracts hidden content for further use.<br>
 <img src="images/revealnet.drawio.png" alt="RMODEL"/>
 </div>
 
