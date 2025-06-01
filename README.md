@@ -1,2 +1,2 @@
-# Mamba-Driven-Content-Preserving-Multi-Style-Transfer-with-GAN-based-Steganography
-Multi-style transfer framework powered by Vision Mamba for style transformation and GAN-based steganography for content embedding. Supports serial style transfer by decoding and reusing content features from stylized images, ensuring consistent content preservation across multiple styles
+# 🌀 MambaStegaFormer: Serial Style Transfer with Content Steganography and Hybrid Mamba-Transformer
+MambaStegaFormer is a deep learning framework designed for serial style transfer — the ability to apply multiple artistic styles sequentially — while preserving the semantic content of the original image. This is achieved through a hybrid architecture that combines the efficiency of Mamba (state space models) with the expressive power of Transformers, enhanced by a steganographic mechanism that invisibly encodes content features into stylized outputs.
