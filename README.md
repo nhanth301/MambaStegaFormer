@@ -1,5 +1,4 @@
-# 🌀 MambaStegaFormer
-**Serial Style Transfer with Content Steganography and Hybrid Mamba-Transformer**
+# 🌀 MambaStegaFormer: *Serial Style Transfer with Content Steganography and Hybrid Mamba-Transformer*
 
 ## 🧠 Introduction
 
