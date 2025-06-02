@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In the evolving domain of computer vision and image processing, style transfer has become a widely adopted technique for reimagining images in various artistic styles. Traditional style transfer approaches, however, are constrained to applying a single style per transformation, often resulting in the degradation of an image's semantic content when multiple styles are applied sequentially. To overcome this limitation, we present **MambaStegaFormer**, an advanced deep learning framework engineered for **serial style transfer**—the sequential application of multiple artistic styles—while ensuring the preservation of the original image's core semantic content.
+In the evolving domain of computer vision and image processing, style transfer has become a widely adopted technique for reimagining images in various artistic styles. Traditional style transfer approaches, however, are constrained to applying a single style per transformation, often resulting in the degradation of an image's semantic content when multiple styles are applied sequentially. To overcome this limitation, we present **MambaStegaFormer**, an advanced deep learning framework engineered for **serial style transfer**, enabling the sequential application of multiple artistic styles while ensuring the preservation of the original image's core semantic content.
 
 The MambaStegaFormer framework leverages a sophisticated design that integrates two key components:
 
