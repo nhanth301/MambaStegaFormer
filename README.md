@@ -132,7 +132,7 @@ We evaluate MambaStegaFormer on three tasks:
 <img src="images/eval.drawio.png" alt="Steganography Qualitative Evaluation" width="700"/>
 </div>
 
-- **Quantitative**: The averaged L2 distance, SSIM, and LPIPS [1] between the results and their corresponding expectations.
+- **Quantitative**: The averaged L2 distance, SSIM, and LPIPS between the results and their corresponding expectations.
 
 <div align="center">
 
