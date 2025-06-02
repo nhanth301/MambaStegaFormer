@@ -161,7 +161,7 @@ To run this project, please follow these steps:
 1. **Download the pretrained checkpoints:**
 
    👉 Visit the following Google Drive link to download the required checkpoints:  
-   **[Google Drive - Checkpoints](https://your-google-drive-link.com)**
+   **[Google Drive - Checkpoints](https://drive.google.com/file/d/1hfdLaQ-nLQkqGq3YoGArCjIftA-6skzD/view?usp=drive_link)**
 
 2. **Place the checkpoints in the correct directory:**
 
