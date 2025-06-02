@@ -30,7 +30,7 @@ The architecture consists of three main modules:
 <div align="center">
 
 ### **2. Hiding Network**: A U-Net that embeds content into stylized output.<br>
-<img src="images/hiding.png" alt="HMODEL" width="700"/>
+<img src="images/unet.drawio.png" alt="HMODEL" width="700"/>
 </div>
 
 <div align="center">
