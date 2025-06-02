@@ -127,15 +127,25 @@ We evaluate MambaStegaFormer on three tasks:
 <img src="images/eval.drawio.png" alt="Steganography Qualitative Evaluation" width="700"/>
 </div>
 
-- **Quantitative**: We evaluate serial stylization performance using L2 distance, SSIM (Structural Similarity), and LPIPS (Learned Perceptual Image Patch Similarity). Lower L2 and LPIPS, and higher SSIM values indicate better content preservation and perceptual quality after multiple stylizations.
+- **Quantitative**: The averaged L2 distance, SSIM, and LPIPS [1] between the results and their corresponding expectations.
 
 <div align="center">
 
-| Method           | L2 ↓     | SSIM ↑   | LPIPS ↓  |
-|------------------|----------|----------|----------|
-| [AdaIN (ICCV 2017)](https://arxiv.org/abs/1703.06868)           | 0.0198   | 0.4419   | 0.3108   |
-| [SC-Stylization (WACV 2020)](https://arxiv.org/abs/1812.03910)   | 0.0349   | 0.5684   | 0.2222   |
-| **Ours**         | **0.0103🥇** | **0.8461🥇** | **0.0858🥇** |
+
+|                          | [AdaIN (ICCV 2017)](https://arxiv.org/abs/1703.06868) | [SC-Stylization (WACV 2020)](https://arxiv.org/abs/1812.03910) | **Ours**  |
+|--------------------------|-----------|---------------------|-----------|
+| **_Reverse_**            |           |                     |           |
+| L2 ↓                     | 0.0374    | 0.0216              | **0.0009🥇**|
+| SSIM ↑                   | 0.3154    | 0.3985              | **0.9181🥇**|
+| LPIPS ↓                  | 0.3778    | 0.2498              | **0.0606🥇**|
+| **_Serial Style Transfer_** |       |                     |           |
+| L2 ↓                     | 0.0198    | 0.0349              | **0.0103🥇**|
+| SSIM ↑                   | 0.4419    | 0.5684              | **0.8461🥇**|
+| LPIPS ↓                  | 0.3108    | 0.2222              | **0.0858🥇**|
+| **_Steganography_**      |           |                     |           |
+| L2 ↓                     | x         | 0.0042              | **0.0010🥇**|
+| SSIM ↑                   | x         | 0.8057              | **0.9488🥇**|
+| LPIPS ↓                  | x         | 0.1938              | **0.0191🥇**|
 
 </div>
 
