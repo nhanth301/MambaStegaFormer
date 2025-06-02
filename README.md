@@ -1,12 +1,21 @@
-# 🌀 MambaStegaFormer: *Serial Style Transfer with Content Steganography and Hybrid Mamba-Transformer*
+# MambaStegaFormer: A Novel Framework for Serial Style Transfer with Content Preservation
 
-## 🧠 Introduction
+## Introduction
 
-`MambaStegaFormer` is a novel deep learning framework designed for **serial style transfer** — applying multiple artistic styles sequentially — while preserving the semantic content of the original image.
+In the evolving domain of computer vision and image processing, style transfer has become a widely adopted technique for reimagining images in various artistic styles. Traditional style transfer approaches, however, are constrained to applying a single style per transformation, often resulting in the degradation of an image's semantic content when multiple styles are applied sequentially. To overcome this limitation, we present **MambaStegaFormer**, an advanced deep learning framework engineered for **serial style transfer**—the sequential application of multiple artistic styles—while ensuring the preservation of the original image's core semantic content.
 
-Our method combines:
-- A **Hybrid Mamba-Transformer backbone** for powerful and efficient feature modeling.
-- A **steganographic pipeline** (U-Net Hider + CNN Revealer) to encode and recover content information during repeated stylizations.
+The MambaStegaFormer framework leverages a sophisticated design that integrates two key components:
+
+- **Hybrid Mamba-Transformer Backbone**: This innovative architecture merges the efficiency of Mamba models with the robust representational capacity of transformer networks. By combining these strengths, the backbone delivers powerful and efficient feature modeling, enabling the framework to maintain content fidelity throughout repeated stylizations.
+- **Steganographic Pipeline**: Comprising a U-Net-based Hider and a CNN-based Revealer, this pipeline embeds original content information into the stylized images and subsequently retrieves it. This mechanism ensures that the semantic integrity of the image is preserved, even after multiple style applications.
+
+### Key Features
+
+- **Serial Style Transfer**: Supports the sequential application of multiple artistic styles, offering greater flexibility in creative image manipulation.
+- **Enhanced Feature Modeling**: Utilizes a hybrid Mamba-Transformer backbone for superior efficiency and accuracy in processing image features.
+- **Content Preservation**: Employs a steganographic approach to encode and recover content information, safeguarding the original image's meaning across transformations.
+
+MambaStegaFormer represents a significant advancement in style transfer technology, enabling new possibilities for artistic expression and image processing while upholding the integrity of the original content. This framework is poised to redefine the boundaries of creative and technical applications in the field.
 
 ## 🏗️ Model Architecture
 
