@@ -154,6 +154,26 @@ We evaluate MambaStegaFormer on three tasks:
 
 </div>
 
+## 🚀 How to Run This Project
+
+To run this project, please follow these steps:
+
+1. **Download the pretrained checkpoints:**
+
+   👉 Visit the following Google Drive link to download the required checkpoints:  
+   **[Google Drive - Checkpoints](https://your-google-drive-link.com)**
+
+2. **Place the checkpoints in the correct directory:**
+
+   After downloading, create a folder named `checkpoints` in the root directory of the project (if it doesn't already exist), and place all the downloaded checkpoint files inside it:
+
+3. **Run the application:**
+
+Once the checkpoints are in place, launch the Streamlit demo interface using the following command:
+
+```bash
+streamlit run scripts/run.py
+
 ## 📚 References
 - [Shumeet Baluja, “Hiding Images in Plain Sight: Deep Steganography,” NIPS 2017](https://papers.nips.cc/paper_files/paper/2017/hash/838e8afb1ca34354ac209f53d90c3a43-Abstract.html)
 - [Huang & Belongie, “Arbitrary Style Transfer in Real-time with Adaptive Instance Normalization,” ICCV 2017](https://arxiv.org/abs/1703.06868)  
