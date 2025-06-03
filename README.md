@@ -171,7 +171,7 @@ Once the checkpoints are in place, launch the Streamlit demo interface using the
 ```bash
 streamlit run scripts/run.py
 ```
-## 📚 References
+## Acknowledgments
 - [Shumeet Baluja, “Hiding Images in Plain Sight: Deep Steganography,” NIPS 2017](https://papers.nips.cc/paper_files/paper/2017/hash/838e8afb1ca34354ac209f53d90c3a43-Abstract.html)
 - [Huang & Belongie, “Arbitrary Style Transfer in Real-time with Adaptive Instance Normalization,” ICCV 2017](https://arxiv.org/abs/1703.06868)  
 - [Zhu et al., “Self-Contained Stylization via Steganography for Reverse and Serial Style Transfer,” WACV 2020](https://arxiv.org/abs/1812.03910)  
