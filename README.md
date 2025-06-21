@@ -89,7 +89,8 @@ We evaluate MambaStegaFormer on three tasks:
 - **Qualitative** <br>
 <div align="center">
 <img src="images/AAAA.jpg" alt="Style Transfer Qualitative Evaluation" width="700"/>
-<img src="images/cp.jpg" alt="MambaST vs. Hybrid Mamba-Transformer" width="700"/>
+<img src="images/cp.png" alt="MambaST vs. Hybrid Mamba-Transformer" width="700"/>
+
 *Figure 1. Visualizing the "patch problem" in the SOTA MambaST model. Lacking global context, the MambaST output (left) exhibits patching artifacts and uneven style distribution. In contrast, our hybrid model (right) successfully resolves this limitation.*
 </div>
 
