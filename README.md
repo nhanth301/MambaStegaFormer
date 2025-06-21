@@ -89,9 +89,12 @@ We evaluate MambaStegaFormer on three tasks:
 - **Qualitative** <br>
 <div align="center">
 <img src="images/AAAA.jpg" alt="Style Transfer Qualitative Evaluation" width="700"/>
+
+*Figure 1: Qualitative comparison of our proposed model ("Ours") against other state-of-the-art methods, including AdaIN, StyTR, and MambaST, across a diverse set of content and style image pairs.*
+
 <img src="images/cp.png" alt="MambaST vs. Hybrid Mamba-Transformer" width="700"/>
 
-*Visualizing the "patch problem" in the SOTA MambaST model. Lacking global context, the MambaST output (left) exhibits patching artifacts and uneven style distribution. In contrast, our hybrid model (right) successfully resolves this limitation.*
+*Figure 2: Visualizing the "patch problem" in the SOTA MambaST model. Lacking global context, the MambaST output (left) exhibits patching artifacts and uneven style distribution. In contrast, our hybrid model (right) successfully resolves this limitation.*
 </div>
 
 - **Quantitative**: We compare style transfer methods on metrics including ArtFID, MSG, LPIPS, CFSD, inference time, and memory usage. Lower ArtFID, MSG, LPIPS, and CFSD indicate better stylization quality and content preservation. Our model achieves the best content fidelity (CFSD) while maintaining competitive style quality and efficiency.
