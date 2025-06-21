@@ -27,7 +27,7 @@ The architecture consists of three main modules:
 <img src="images/stmodel.drawio.png" alt="STMODEL"/>
 
 *Figure 1: Overview of the style transfer architecture.*
-<img src="images/all.png" alt="STMODE-DETAIL"/>
+<img src="images/all.drawio.png" alt="STMODE-DETAIL"/>
 
 *Figure 2: Detailed components of the backbone, illustrating the interaction between Mamba and Transformer modules.*
 </div>
