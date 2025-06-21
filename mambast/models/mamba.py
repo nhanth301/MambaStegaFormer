@@ -135,7 +135,7 @@ class Encoder(nn.Module):
         else:
             for index, layer in enumerate(zip(self.trans_layer,self.layers)):
                 if self.args is not None:
-                    if self.args.use_pos_embed and index == 0:
+                    if self.args.use_pos_embed:
                         output = layer[0](self.with_pos_embed(output,pos)) + output
                         output = layer[1](output) + output
                     else:
