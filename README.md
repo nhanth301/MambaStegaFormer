@@ -68,7 +68,7 @@ The architecture consists of three main modules:
 <img src="images/full.png" alt="HMODEL" width="700"/>
 </div>
 
-The training pipeline integrates all components of the `MambaStegaFormer` model in an end-to-end learning framework. 
+The training pipeline integrates all components of the `MambaStegaFormer` model in an end-to-end learning framework.
 
 1. The **content image** is first processed by the **Hybrid Mamba-Transformer backbone** to generate a stylized output.
 2. The **Hiding Network (U-Net)** then embeds the original content features into this stylized image, creating a steganographic output that visually resembles the stylized image but secretly contains the content.
@@ -121,10 +121,10 @@ We evaluate MambaStegaFormer on three tasks:
 
 | Method  | ArtFID ↓ | MSG ↓  | LPIPS ↓ | CFSD ↓ | Time (ms) ↓        | Memory Usage (MiB) ↓ |
 |---------|----------|--------|---------|--------|--------------------|----------------------|
-| [AdaIN (ICCV 2017)](https://arxiv.org/abs/1703.06868)   | 29.1034  | 1.0171 | 0.5726  | 0.2876      | **137.20 ± 0.36**      | **187.14**               |
-| [StyTR (CVPR 2022)](https://arxiv.org/abs/2105.14576)  | 28.8073  | 1.0175 | **0.4815**  | *0.2552*      | 2343.51 ± 13.49    | 1725.54              |
-| [MambaST (WACV 2025, SOTA 🎯)](https://arxiv.org/abs/2409.10385) | **26.6509**  | **1.0145** | 0.5267  | 0.2655      | *1317.06 ± 5.47*     | *1048.71*              |
-| **Ours**    | *28.4936*  | *1.0163* | *0.4942*  | **0.2551**      | 1912.66 ± 4.21     | 1088.95              |
+| [AdaIN (ICCV 2017)](https://arxiv.org/abs/1703.06868)    | 29.1034  | 1.0171 | 0.5726  | 0.2876       | **137.20 ± 0.36** | **187.14** |
+| [StyTR (CVPR 2022)](https://arxiv.org/abs/2105.14576)   | 28.8073  | 1.0175 | **0.4815** | *0.2552* | 2343.51 ± 13.49    | 1725.54              |
+| [MambaST (WACV 2025, SOTA 🎯)](https://arxiv.org/abs/2409.10385) | **26.6509** | **1.0145** | 0.5267  | 0.2655       | *1317.06 ± 5.47* | *1048.71* |
+| **Ours** | *28.4936* | *1.0163* | *0.4942* | **0.2551** | 1912.66 ± 4.21     | 1088.95              |
 
 </div>
 
@@ -161,20 +161,20 @@ We evaluate MambaStegaFormer on three tasks:
 <div align="center">
 
 
-|                          | [AdaIN (ICCV 2017)](https://arxiv.org/abs/1703.06868) | [SC-Stylization (WACV 2020)](https://arxiv.org/abs/1812.03910) | **Ours**  |
+|                           | [AdaIN (ICCV 2017)](https://arxiv.org/abs/1703.06868) | [SC-Stylization (WACV 2020)](https://arxiv.org/abs/1812.03910) | **Ours** |
 |--------------------------|-----------|---------------------|-----------|
-| **_Reverse_**            |           |                     |           |
-| L2 ↓                     | 0.0374    | *0.0216*              | **0.0009**|
-| SSIM ↑                   | 0.3154    | *0.3985*              | **0.9181**|
-| LPIPS ↓                  | 0.3778    | *0.2498*              | **0.0606**|
-| **_Serial Style Transfer_** |       |                     |           |
-| L2 ↓                     | *0.0198*    | 0.0349              | **0.0103**|
-| SSIM ↑                   | 0.4419    | *0.5684*              | **0.8461**|
-| LPIPS ↓                  | 0.3108    | *0.2222*              | **0.0858**|
-| **_Steganography_**      |           |                     |           |
-| L2 ↓                     | x         | *0.0042*              | **0.0010**|
-| SSIM ↑                   | x         | *0.8057*              | **0.9488**|
-| LPIPS ↓                  | x         | *0.1938*              | **0.0191**|
+| **_Reverse_** |           |                     |           |
+| L2 ↓                     | 0.0374    | *0.0216* | **0.0009**|
+| SSIM ↑                   | 0.3154    | *0.3985* | **0.9181**|
+| LPIPS ↓                  | 0.3778    | *0.2498* | **0.0606**|
+| **_Serial Style Transfer_** |           |                     |           |
+| L2 ↓                     | *0.0198* | 0.0349              | **0.0103**|
+| SSIM ↑                   | 0.4419    | *0.5684* | **0.8461**|
+| LPIPS ↓                  | 0.3108    | *0.2222* | **0.0858**|
+| **_Steganography_** |           |                     |           |
+| L2 ↓                     | x         | *0.0042* | **0.0010**|
+| SSIM ↑                   | x         | *0.8057* | **0.9488**|
+| LPIPS ↓                  | x         | *0.1938* | **0.0191**|
 
 </div>
 
@@ -194,10 +194,3 @@ Once the checkpoints are in place, launch the Streamlit demo interface using the
 
 ```bash
 streamlit run scripts/run.py
-```
-## Acknowledgments
-- [Shumeet Baluja, “Hiding Images in Plain Sight: Deep Steganography,” NIPS 2017](https://papers.nips.cc/paper_files/paper/2017/hash/838e8afb1ca34354ac209f53d90c3a43-Abstract.html)
-- [Huang & Belongie, “Arbitrary Style Transfer in Real-time with Adaptive Instance Normalization,” ICCV 2017](https://arxiv.org/abs/1703.06868)  
-- [Zhu et al., “Self-Contained Stylization via Steganography for Reverse and Serial Style Transfer,” WACV 2020](https://arxiv.org/abs/1812.03910)  
-- [Yingying Deng et al., “StyTr^2:  Image Style Transfer with Transformers,” CVPR 2022](https://arxiv.org/abs/2105.14576)  
-- [Filippo Botti et al., “Mamba-ST: State Space Model for Efficient Style Transfer,” WACV 2025 (SOTA)](https://arxiv.org/abs/2409.10385)  
