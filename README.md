@@ -35,7 +35,7 @@ The MambaStegaFormer framework leverages a sophisticated design that integrates 
 
 MambaStegaFormer represents a significant advancement in style transfer technology, enabling new possibilities for artistic expression and image processing while upholding the integrity of the original content. This framework is poised to redefine the boundaries of creative and technical applications in the field.
 
-## 🏗️ Model Architecture
+## Model Architecture
 
 The architecture consists of three main modules:
 
@@ -62,7 +62,7 @@ The architecture consists of three main modules:
 <img src="images/revealnet.drawio.png" alt="RMODEL"/>
 </div>
 
-## 🔁 Training Pipeline
+## Training Pipeline
 
 <div align="center">
 <img src="images/full.png" alt="HMODEL" width="700"/>
@@ -76,7 +76,7 @@ The training pipeline integrates all components of the `MambaStegaFormer` model 
 4. Loss functions are applied both on stylization quality and content reconstruction, guiding the model to balance style transfer fidelity and content preservation.
 5. This joint training ensures the model can perform serial style transfers while maintaining content integrity across multiple stylizations.
 
-## 🚀 Inference Pipeline
+## Inference Pipeline
 
 The model supports two inference modes to address different use cases:
 
@@ -98,7 +98,7 @@ In this mode, the content is hidden within the stylized image and then revealed 
 <img src="images/infer.png" alt="Inference with Steganography" width="700"/>
 </div>
 
-## 📊 Tasks and Evaluation
+## Tasks and Evaluation
 
 We evaluate MambaStegaFormer on three tasks:
 
@@ -176,7 +176,7 @@ We evaluate MambaStegaFormer on three tasks:
 
 </div>
 
-## 🚀 How to Run This Project
+## How to Run This Project
 
 To run this project, please follow these steps:
 
@@ -192,3 +192,10 @@ Once the checkpoints are in place, launch the Streamlit demo interface using the
 
 ```bash
 streamlit run scripts/run.py
+
+## Acknowledgments
+- [Shumeet Baluja, “Hiding Images in Plain Sight: Deep Steganography,” NIPS 2017](https://papers.nips.cc/paper_files/paper/2017/hash/838e8afb1ca34354ac209f53d90c3a43-Abstract.html)
+- [Huang & Belongie, “Arbitrary Style Transfer in Real-time with Adaptive Instance Normalization,” ICCV 2017](https://arxiv.org/abs/1703.06868)
+- [Zhu et al., “Self-Contained Stylization via Steganography for Reverse and Serial Style Transfer,” WACV 2020](https://arxiv.org/abs/1812.03910)
+- [Yingying Deng et al., “StyTr^2:  Image Style Transfer with Transformers,” CVPR 2022](https://arxiv.org/abs/2105.14576)
+- [Filippo Botti et al., “Mamba-ST: State Space Model for Efficient Style Transfer,” WACV 2025 (SOTA)](https://arxiv.org/abs/2409.10385)
