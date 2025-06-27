@@ -192,6 +192,7 @@ Once the checkpoints are in place, launch the Streamlit demo interface using the
 
 ```bash
 streamlit run scripts/run.py
+```
 
 ## Acknowledgments
 - [Shumeet Baluja, “Hiding Images in Plain Sight: Deep Steganography,” NIPS 2017](https://papers.nips.cc/paper_files/paper/2017/hash/838e8afb1ca34354ac209f53d90c3a43-Abstract.html)
