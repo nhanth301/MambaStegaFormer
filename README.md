@@ -1,5 +1,23 @@
 # MambaStegaFormer: A Novel Framework for Serial Style Transfer with Content Preservation
 
+## 📖 Table of Contents
+- [Introduction](#introduction)
+  - [Key Features](#key-features)
+- [Model Architecture](#-model-architecture)
+  - [1. Style Transfer Backbone](#1-style-transfer-backbone)
+  - [2. Hiding Network](#2-hiding-network)
+  - [3. Revealing Network](#3-revealing-network)
+- [Training Pipeline](#-training-pipeline)
+- [Inference Pipeline](#-inference-pipeline)
+  - [1. Inference Without Steganography](#1-inference-without-steganography)
+  - [2. Inference With Steganography](#2-inference-with-steganography)
+- [Tasks and Evaluation](#-tasks-and-evaluation)
+  - [1. Style Transfer](#-1-style-transfer)
+  - [2. Steganography](#️-2-steganography)
+  - [3. Serial Style Transfer](#-3-serial-style-transfer)
+- [How to Run This Project](#-how-to-run-this-project)
+- [Acknowledgments](#acknowledgments)
+
 ## Introduction
 
 In the evolving domain of computer vision and image processing, style transfer has become a widely adopted technique for reimagining images in various artistic styles. Traditional style transfer approaches, however, are constrained to applying a single style per transformation, often resulting in the degradation of an image's semantic content when multiple styles are applied sequentially. To overcome this limitation, we present **MambaStegaFormer**, an advanced deep learning framework engineered for **serial style transfer**, enabling the sequential application of multiple artistic styles while ensuring the preservation of the original image's core semantic content.
