@@ -3,19 +3,19 @@
 ## 📖 Table of Contents
 - [Introduction](#introduction)
   - [Key Features](#key-features)
-- [Model Architecture](#-model-architecture)
+- [Model Architecture](#model-architecture)
   - [1. Style Transfer Backbone](#1-style-transfer-backbone)
   - [2. Hiding Network](#2-hiding-network)
   - [3. Revealing Network](#3-revealing-network)
-- [Training Pipeline](#-training-pipeline)
-- [Inference Pipeline](#-inference-pipeline)
+- [Training Pipeline](#training-pipeline)
+- [Inference Pipeline](#inference-pipeline)
   - [1. Inference Without Steganography](#1-inference-without-steganography)
   - [2. Inference With Steganography](#2-inference-with-steganography)
-- [Tasks and Evaluation](#-tasks-and-evaluation)
-  - [1. Style Transfer](#-1-style-transfer)
-  - [2. Steganography](#️-2-steganography)
-  - [3. Serial Style Transfer](#-3-serial-style-transfer)
-- [How to Run This Project](#-how-to-run-this-project)
+- [Tasks and Evaluation](#tasks-and-evaluation)
+  - [1. Style Transfer](#1-style-transfer)
+  - [2. Steganography](#2-steganography)
+  - [3. Serial Style Transfer](#3-serial-style-transfer)
+- [How to Run This Project](#how-to-run-this-project)
 - [Acknowledgments](#acknowledgments)
 
 ## Introduction
@@ -41,7 +41,7 @@ The architecture consists of three main modules:
 
 <div align="center">
 
-### **1. Style Transfer Backbone**: Hybrid Mamba-Transformer for stylization.<br>
+### 1. Style Transfer Backbone
 <img src="images/stmodel.drawio.png" alt="STMODEL"/>
 
 *Figure 1: Overview of the style transfer architecture.*
@@ -52,17 +52,17 @@ The architecture consists of three main modules:
 
 <div align="center">
 
-### **2. Hiding Network**: A U-Net that embeds content into stylized output.<br>
+### 2. Hiding Network
 <img src="images/unet.drawio.png" alt="HMODEL" width="700"/>
 </div>
 
 <div align="center">
 
-### **3. Revealing Network**: A CNN that extracts hidden content for further use.<br>
+### 3. Revealing Network
 <img src="images/revealnet.drawio.png" alt="RMODEL"/>
 </div>
 
-## 🔁 Training Pipeline <br>
+## 🔁 Training Pipeline
 
 <div align="center">
 <img src="images/full.png" alt="HMODEL" width="700"/>
@@ -80,7 +80,7 @@ The training pipeline integrates all components of the `MambaStegaFormer` model 
 
 The model supports two inference modes to address different use cases:
 
-### 1. Inference **Without Steganography**
+### 1. Inference Without Steganography
 
 In this mode, style transfer is performed directly without hiding or revealing content. Suitable for simple stylization tasks.
 
@@ -90,7 +90,7 @@ In this mode, style transfer is performed directly without hiding or revealing c
 
 ---
 
-### 2. Inference **With Steganography**
+### 2. Inference With Steganography
 
 In this mode, the content is hidden within the stylized image and then revealed to preserve the original content. This enables **serial style transfer** without content degradation.
 
@@ -102,7 +102,7 @@ In this mode, the content is hidden within the stylized image and then revealed 
 
 We evaluate MambaStegaFormer on three tasks:
 
-### 🎨 1. Style Transfer
+### 1. Style Transfer
 
 - **Qualitative** <br>
 <div align="center">
@@ -128,9 +128,7 @@ We evaluate MambaStegaFormer on three tasks:
 
 </div>
 
-
-
-### 🕵️‍♂️ 2. Steganography
+### 2. Steganography
 
 - **Qualitative** <br>
 
@@ -148,7 +146,7 @@ We evaluate MambaStegaFormer on three tasks:
 
 </div>
 
-### 🔁 3. Serial Style Transfer
+### 3. Serial Style Transfer
 
 - **Qualitative** <br>
 
